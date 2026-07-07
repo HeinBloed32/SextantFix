@@ -100,6 +100,7 @@
   .gcard.wide{ grid-column:span 2; }
   .gcard .frame{
     aspect-ratio:16/10;
+    min-height:180px;
     background:var(--bg);
     display:flex; align-items:center; justify-content:center; position:relative;
     overflow:hidden;
@@ -135,6 +136,7 @@
     .nav-links{ display:none; }
     .steps,.features{ grid-template-columns:1fr; }
     .gallery{ grid-template-columns:1fr; }
+    .gcard.wide{ grid-column:span 1; }
     .hero-bg::after{ background:linear-gradient(0deg, rgba(10,20,32,.92) 10%, rgba(10,20,32,.55) 60%, rgba(10,20,32,.4) 100%); }
   }
   [hidden]{ display:none !important; }
