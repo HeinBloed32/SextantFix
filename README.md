@@ -12,12 +12,11 @@ SextantFix ist ein Werkzeug zur astronomischen Navigation (Tagbogenverfahren und
 
 ### Installation (Windows)
 
-1. Unter [**Releases → Latest**](../../releases/latest) die Datei **`SextantFix_Setup.bat`** herunterladen.
-2. **Die Datei entsperren:** Rechtsklick auf die heruntergeladene `SextantFix_Setup.bat` → **Eigenschaften** → unten im Reiter *Allgemein* bei **„Zulassen"** bzw. **„Entsperren"** das Häkchen setzen → **OK**. (Windows markiert aus dem Internet geladene Dateien; dieser Schritt hebt die Blockade auf.)
-3. Die Datei per Doppelklick starten. Erscheint eine SmartScreen-Meldung, auf **„Weitere Informationen" → „Trotzdem ausführen"** klicken.
-4. Das Setup lädt eine eigene Python-Umgebung, installiert die Abhängigkeiten und baut das Programm lokal. Das dauert einige Minuten. Am Ende liegt eine Verknüpfung auf dem Desktop.
+1. Unter [**Releases → Latest**](../../releases/latest) die Datei **`SextantFix_Installer.exe`** herunterladen.
+2. Die Datei per Doppelklick starten. Der Installer läuft direkt durch — ein manuelles Entsperren oder eine SmartScreen-Bestätigung ist normalerweise **nicht** nötig.
+3. Am Ende liegt eine Verknüpfung auf dem Desktop.
 
-**Hinweis zu Smart App Control (Windows 11):** Ist die Sicherheitsfunktion *Smart App Control* aktiv, blockiert sie das Setup unter Umständen ohne „Trotzdem ausführen"-Option. Falls auch das Entsperren über die Eigenschaften nicht hilft, lässt sich Smart App Control unter *Einstellungen → Datenschutz und Sicherheit → Windows-Sicherheit → App- & Browsersteuerung → Einstellungen für Smart App Control* vorübergehend abschalten, das Setup ausführen und die Funktion danach wieder aktivieren.
+**Falls dein System dennoch eine Warnung zeigt:** Je nach Windows-Version und Sicherheitseinstellungen kann es vereinzelt trotzdem zu einer SmartScreen-Meldung kommen. In dem Fall auf **„Weitere Informationen" → „Trotzdem ausführen"** klicken. Bleibt die Datei blockiert (z. B. weil *Smart App Control* aktiv ist und keine „Trotzdem ausführen"-Option anbietet), hilft meist: Rechtsklick auf `SextantFix_Installer.exe` → **Eigenschaften** → im Reiter *Allgemein* bei **„Zulassen"** bzw. **„Entsperren"** das Häkchen setzen → **OK**, und die Datei erneut starten. Hilft auch das nicht, lässt sich *Smart App Control* unter *Einstellungen → Datenschutz und Sicherheit → Windows-Sicherheit → App- & Browsersteuerung → Einstellungen für Smart App Control* vorübergehend abschalten, der Installer ausführen und die Funktion danach wieder aktivieren.
 
 Eine ausführlichere Anleitung liegt dem heruntergeladenen Paket bei.
 
@@ -33,12 +32,11 @@ SextantFix is a tool for celestial navigation (Tagbogen method and St. Hilaire i
 
 ### Installation (Windows)
 
-1. From [**Releases → Latest**](../../releases/latest), download **`SextantFix_Setup.bat`**.
-2. **Unblock the file:** right-click the downloaded `SextantFix_Setup.bat` → **Properties** → on the *General* tab, tick the **"Unblock"** checkbox near the bottom → **OK**. (Windows flags files downloaded from the internet; this step clears that block.)
-3. Double-click the file to run it. If a SmartScreen prompt appears, click **"More info" → "Run anyway"**.
-4. The setup downloads its own Python environment, installs the dependencies and builds the application locally. This takes a few minutes. A desktop shortcut is created at the end.
+1. From [**Releases → Latest**](../../releases/latest), download **`SextantFix_Installer.exe`**.
+2. Double-click the file to run it. The installer runs straight through — manually unblocking the file or confirming a SmartScreen prompt normally isn't necessary.
+3. A desktop shortcut is created at the end.
 
-**Note on Smart App Control (Windows 11):** If the *Smart App Control* security feature is active, it may block the setup without offering a "Run anyway" option. If unblocking via Properties does not help either, you can temporarily turn Smart App Control off under *Settings → Privacy & security → Windows Security → App & browser control → Smart App Control settings*, run the setup, and re-enable it afterwards.
+**If your system still shows a warning:** Depending on your Windows version and security settings, a SmartScreen prompt may occasionally still appear. In that case, click **"More info" → "Run anyway"**. If the file remains blocked (e.g. because *Smart App Control* is active and doesn't offer a "Run anyway" option), it usually helps to right-click `SextantFix_Installer.exe` → **Properties** → on the *General* tab, tick the **"Unblock"** checkbox → **OK**, then run the file again. If that still doesn't help, you can temporarily turn off *Smart App Control* under *Settings → Privacy & security → Windows Security → App & browser control → Smart App Control settings*, run the installer, and re-enable it afterwards.
 
 A more detailed guide is included in the downloaded package.
 
@@ -54,12 +52,11 @@ SextantFix est un outil de navigation astronomique (méthode Tagbogen et méthod
 
 ### Installation (Windows)
 
-1. Depuis [**Releases → Latest**](../../releases/latest), téléchargez **`SextantFix_Setup.bat`**.
-2. **Débloquez le fichier :** clic droit sur le fichier `SextantFix_Setup.bat` téléchargé → **Propriétés** → dans l'onglet *Général*, cochez la case **« Débloquer »** en bas → **OK**. (Windows marque les fichiers téléchargés depuis Internet ; cette étape lève le blocage.)
-3. Double-cliquez sur le fichier pour le lancer. Si un avertissement SmartScreen apparaît, cliquez sur **« Informations complémentaires » → « Exécuter quand même »**.
-4. Le programme d'installation télécharge son propre environnement Python, installe les dépendances et compile l'application localement. Cela prend quelques minutes. Un raccourci est créé sur le bureau à la fin.
+1. Depuis [**Releases → Latest**](../../releases/latest), téléchargez **`SextantFix_Installer.exe`**.
+2. Double-cliquez sur le fichier pour le lancer. L'installateur s'exécute directement — il n'est normalement pas nécessaire de débloquer le fichier manuellement ni de confirmer une alerte SmartScreen.
+3. Un raccourci est créé sur le bureau à la fin.
 
-**Remarque sur Smart App Control (Windows 11) :** Si la fonction de sécurité *Smart App Control* est active, elle peut bloquer l'installation sans proposer l'option « Exécuter quand même ». Si le déblocage via les Propriétés ne fonctionne pas non plus, vous pouvez désactiver temporairement Smart App Control dans *Paramètres → Confidentialité et sécurité → Sécurité Windows → Contrôle des applications et du navigateur → Paramètres de Smart App Control*, lancer l'installation, puis la réactiver.
+**Si votre système affiche tout de même un avertissement :** selon la version de Windows et les paramètres de sécurité, une alerte SmartScreen peut occasionnellement apparaître. Dans ce cas, cliquez sur **« Informations complémentaires » → « Exécuter quand même »**. Si le fichier reste bloqué (par exemple parce que *Smart App Control* est actif et ne propose pas d'option « Exécuter quand même »), il suffit généralement de faire un clic droit sur `SextantFix_Installer.exe` → **Propriétés** → dans l'onglet *Général*, cochez la case **« Débloquer »** → **OK**, puis de relancer le fichier. Si cela ne suffit toujours pas, vous pouvez désactiver temporairement *Smart App Control* dans *Paramètres → Confidentialité et sécurité → Sécurité Windows → Contrôle des applications et du navigateur → Paramètres de Smart App Control*, lancer l'installateur, puis la réactiver.
 
 Un guide plus détaillé est inclus dans le paquet téléchargé.
 
