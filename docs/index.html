@@ -123,6 +123,19 @@
   .download h2{ font-size:clamp(1.9rem,4vw,2.6rem); letter-spacing:-.5px; margin-bottom:16px; }
   .download p{ color:var(--ink-dim); max-width:34em; margin:0 auto 30px; }
   .os-note{ font-family:var(--mono); font-size:.76rem; color:var(--ink-dim); margin-top:20px; letter-spacing:.5px; }
+  .dl-disclaimer{
+    max-width:520px;
+    margin:22px auto 0;
+    padding:14px 18px;
+    background:rgba(201,168,106,.08);
+    border:1px solid rgba(201,168,106,.35);
+    border-radius:8px;
+    font-size:.82rem;
+    line-height:1.55;
+    color:var(--ink-dim);
+    text-align:left;
+  }
+  .dl-disclaimer strong{ color:var(--ink); }
 
   /* ---------- Footer ---------- */
   footer{ padding:40px 0; }
@@ -317,6 +330,7 @@
     <p data-i18n="dl_p">SextantFix ist kostenlos. Lade den Installer für Windows — die Installation erledigt den Rest.</p>
     <a href="https://github.com/HeinBloed32/SextantFix/releases/latest/download/SextantFix_Installer.exe" class="btn btn-primary" data-i18n="dl_btn">Für Windows herunterladen</a>
     <div class="os-note" data-i18n="dl_note">Windows 10 / 11</div>
+    <div class="dl-disclaimer"><strong data-i18n="dl_disc_label">Hinweis:</strong> <span data-i18n="dl_disclaimer">SextantFix ist ein Lern- und Trainingswerkzeug für astronomische und terrestrische Navigation. Es ist nicht als Navigationsmittel für den Seebetrieb zugelassen und enthält keine amtlichen, aktuellen Seekarten. Für die tatsächliche Navigation an Bord sind ausschließlich zugelassene Navigationsausrüstung und amtliche Seekarten zu verwenden.</span></div>
   </div>
 </section>
 
@@ -374,6 +388,8 @@ const I18N={
     g5_h:"GRIB-Wetter",g5_p:"Windfelder über der Karte, mit Zeitschieber.",
     dl_h:"Jetzt ausprobieren.",dl_p:"SextantFix ist kostenlos. Lade den Installer für Windows — die Installation erledigt den Rest.",
     dl_btn:"Für Windows herunterladen",dl_note:"Windows 10 / 11",
+    dl_disc_label:"Hinweis:",
+    dl_disclaimer:"SextantFix ist ein Lern- und Trainingswerkzeug für astronomische und terrestrische Navigation. Es ist nicht als Navigationsmittel für den Seebetrieb zugelassen und enthält keine amtlichen, aktuellen Seekarten. Für die tatsächliche Navigation an Bord sind ausschließlich zugelassene Navigationsausrüstung und amtliche Seekarten zu verwenden.",
     foot_gh:"GitHub",foot_how:"Verfahren",foot_dl:"Download",
     lb_hint:"Klicken zum Schließen"
   },
@@ -404,6 +420,8 @@ const I18N={
     g5_h:"GRIB weather",g5_p:"Wind fields over the chart, with a time slider.",
     dl_h:"Try it now.",dl_p:"SextantFix is free. Download the Windows installer — the setup does the rest.",
     dl_btn:"Download for Windows",dl_note:"Windows 10 / 11",
+    dl_disc_label:"Note:",
+    dl_disclaimer:"SextantFix is a learning and training tool for astronomical and terrestrial navigation. It is not approved as a means of navigation for actual sea operations and does not include official, up-to-date nautical charts. Real navigation on board must rely exclusively on approved navigation equipment and official charts.",
     foot_gh:"GitHub",foot_how:"Method",foot_dl:"Download",
     lb_hint:"Click to close"
   },
@@ -434,6 +452,8 @@ const I18N={
     g5_h:"Météo GRIB",g5_p:"Champs de vent sur la carte, avec curseur temporel.",
     dl_h:"Essayez maintenant.",dl_p:"SextantFix est gratuit. Téléchargez l'installateur Windows — l'installation fait le reste.",
     dl_btn:"Télécharger pour Windows",dl_note:"Windows 10 / 11",
+    dl_disc_label:"Remarque :",
+    dl_disclaimer:"SextantFix est un outil d'apprentissage et d'entraînement pour la navigation astronomique et terrestre. Il n'est pas homologué comme moyen de navigation en mer et ne contient pas de cartes marines officielles à jour. Pour la navigation réelle à bord, seuls des équipements de navigation homologués et des cartes marines officielles doivent être utilisés.",
     foot_gh:"GitHub",foot_how:"Méthode",foot_dl:"Télécharger",
     lb_hint:"Cliquez pour fermer"
   }
