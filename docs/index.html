@@ -95,17 +95,25 @@
 
   /* ---------- Screenshot-Galerie ---------- */
   .gallery{ display:grid; grid-template-columns:repeat(2,1fr); gap:22px; }
-  .gcard{ background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .gcard{ background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; transition:all .25s; }
+  .gcard:hover{ border-color:var(--cyan-deep); transform:translateY(-3px); }
+  .gcard.wide{ grid-column:span 2; }
   .gcard .frame{
     aspect-ratio:16/10;
-    background:
-      radial-gradient(circle at 55% 42%, rgba(56,213,224,.10), transparent 62%),
-      repeating-linear-gradient(0deg, transparent 0 26px, rgba(34,57,79,.35) 26px 27px),
-      var(--bg);
+    min-height:180px;
+    background:var(--bg);
     display:flex; align-items:center; justify-content:center; position:relative;
+    overflow:hidden;
   }
-  .gcard .frame svg{ opacity:.55; width:46%; }
-  .gcard .ph{ position:absolute; bottom:12px; left:0; right:0; text-align:center; font-family:var(--mono); font-size:.68rem; color:var(--ink-dim); letter-spacing:.5px; }
+  .gcard .frame img{ width:100%; height:100%; object-fit:cover; object-position:top center; display:block; cursor:zoom-in; }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox{ position:fixed; inset:0; z-index:200; background:rgba(6,12,20,.92); display:flex; align-items:center; justify-content:center; padding:32px; cursor:zoom-out; opacity:0; visibility:hidden; transition:opacity .2s; }
+  .lightbox.on{ opacity:1; visibility:visible; }
+  .lightbox img{ max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,.5); }
+  .lightbox .lb-close{ position:absolute; top:20px; right:28px; font-family:var(--mono); font-size:1.6rem; color:var(--ink-dim); background:none; border:none; cursor:pointer; line-height:1; transition:color .2s; }
+  .lightbox .lb-close:hover{ color:var(--cyan); }
+  .lightbox .lb-hint{ position:absolute; bottom:20px; left:0; right:0; text-align:center; font-family:var(--mono); font-size:.72rem; color:var(--ink-dim); letter-spacing:.5px; }
   .gcard .cap{ padding:16px 20px; border-top:1px solid var(--line); }
   .gcard .cap h4{ font-size:1rem; margin-bottom:4px; }
   .gcard .cap p{ color:var(--ink-dim); font-size:.86rem; }
@@ -115,6 +123,19 @@
   .download h2{ font-size:clamp(1.9rem,4vw,2.6rem); letter-spacing:-.5px; margin-bottom:16px; }
   .download p{ color:var(--ink-dim); max-width:34em; margin:0 auto 30px; }
   .os-note{ font-family:var(--mono); font-size:.76rem; color:var(--ink-dim); margin-top:20px; letter-spacing:.5px; }
+  .dl-disclaimer{
+    max-width:520px;
+    margin:22px auto 0;
+    padding:14px 18px;
+    background:rgba(201,168,106,.08);
+    border:1px solid rgba(201,168,106,.35);
+    border-radius:8px;
+    font-size:.82rem;
+    line-height:1.55;
+    color:var(--ink-dim);
+    text-align:left;
+  }
+  .dl-disclaimer strong{ color:var(--ink); }
 
   /* ---------- Footer ---------- */
   footer{ padding:40px 0; }
@@ -128,6 +149,7 @@
     .nav-links{ display:none; }
     .steps,.features{ grid-template-columns:1fr; }
     .gallery{ grid-template-columns:1fr; }
+    .gcard.wide{ grid-column:span 1; }
     .hero-bg::after{ background:linear-gradient(0deg, rgba(10,20,32,.92) 10%, rgba(10,20,32,.55) 60%, rgba(10,20,32,.4) 100%); }
   }
   [hidden]{ display:none !important; }
@@ -269,31 +291,39 @@
     <div class="gallery">
       <div class="gcard">
         <div class="frame">
-          <svg viewBox="0 0 400 250" fill="none"><circle cx="200" cy="125" r="90" stroke="#1b9aa8" stroke-width="1.2" opacity=".6"/><path d="M70 160 L330 95" stroke="#38d5e0" stroke-width="2"/><path d="M100 80 L310 180" stroke="#c9a86a" stroke-width="1.6" opacity=".8"/><circle cx="214" cy="118" r="4.5" fill="#38d5e0"/></svg>
-          <div class="ph" data-i18n="gph">— Screenshot folgt —</div>
+          <img src="screenshots/standlinien-fix.jpg" alt="Standlinien und Fix">
         </div>
         <div class="cap"><h4 data-i18n="g1_h">Standlinien &amp; Fix</h4><p data-i18n="g1_p">Beobachtungen als Standlinien auf der Seekarte, mit Schnittpunkt.</p></div>
       </div>
       <div class="gcard">
         <div class="frame">
-          <svg viewBox="0 0 400 250" fill="none"><path d="M40 180 Q120 120 200 170 T360 150" stroke="#38d5e0" stroke-width="2" fill="none"/><path d="M40 210 Q120 150 200 200 T360 180" stroke="#c9a86a" stroke-width="1.4" opacity=".7" fill="none"/></svg>
-          <div class="ph" data-i18n="gph2">— Screenshot folgt —</div>
+          <img src="screenshots/tagbogenkurve.jpg" alt="Tagbogenkurve">
         </div>
-        <div class="cap"><h4 data-i18n="g2_h">GRIB-Wetter</h4><p data-i18n="g2_p">Windfelder über der Karte, mit Zeitschieber.</p></div>
+        <div class="cap"><h4 data-i18n="g2_h">dazugehörige Tagbogenkurve</h4><p data-i18n="g2_p">Der Tagesbogen der Sonne, berechnet aus den Messungen — Basis des Tagbogenverfahrens.</p></div>
       </div>
       <div class="gcard">
         <div class="frame">
-          <svg viewBox="0 0 400 250" fill="none"><path d="M60 60 L140 40 L240 70 L340 45 V200 L240 220 L140 195 L60 215 Z" stroke="#1b9aa8" stroke-width="1.4" fill="none" stroke-linejoin="round"/><path d="M140 40 V195 M240 70 V220" stroke="#22394f" stroke-width="1"/></svg>
-          <div class="ph" data-i18n="gph3">— Screenshot folgt —</div>
+          <img src="screenshots/terrestrische-navigation.jpg" alt="Terrestrische Navigation">
         </div>
-        <div class="cap"><h4 data-i18n="g3_h">Offline-Seekarte</h4><p data-i18n="g3_p">Küstenlinien und Kacheln, gespeichert für den Einsatz ohne Netz.</p></div>
+        <div class="cap"><h4 data-i18n="g3_h">Terrestrische Navigation</h4><p data-i18n="g3_p">Peilungen zu Landmarken und Leuchttürmen, direkt auf der Seekarte.</p></div>
       </div>
       <div class="gcard">
         <div class="frame">
-          <svg viewBox="0 0 400 250" fill="none"><circle cx="200" cy="125" r="70" stroke="#1b9aa8" stroke-width="1.2"/><path d="M200 55 V195 M130 125 H270" stroke="#22394f" stroke-width="1"/><circle cx="235" cy="95" r="3.5" fill="#c9a86a"/><circle cx="170" cy="150" r="2.5" fill="#38d5e0"/></svg>
-          <div class="ph" data-i18n="gph4">— Screenshot folgt —</div>
+          <img src="screenshots/offline-seekarte.jpg" alt="Offline-Seekarte">
         </div>
-        <div class="cap"><h4 data-i18n="g4_h">Gestirnsdaten</h4><p data-i18n="g4_p">Berechnete Höhen und Azimute für die Beobachtung.</p></div>
+        <div class="cap"><h4 data-i18n="g4_h">Offline-Seekarte</h4><p data-i18n="g4_p">Küstenlinien und Kacheln, gespeichert für den Einsatz ohne Netz.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/grib-wetter.jpg" alt="GRIB-Wetter">
+        </div>
+        <div class="cap"><h4 data-i18n="g5_h">GRIB-Wetter</h4><p data-i18n="g5_p">Windfelder über der Karte, mit Zeitschieber.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/integration-uebersicht.png" alt="Anbindung an qtVlm, Windy, Stellarium und Google Earth">
+        </div>
+        <div class="cap"><h4 data-i18n="g6_h">Nahtlose Zusammenarbeit mit qtVlm, Windy, Stellarium und Google Earth</h4></div>
       </div>
     </div>
   </div>
@@ -306,6 +336,7 @@
     <p data-i18n="dl_p">SextantFix ist kostenlos. Lade den Installer für Windows — die Installation erledigt den Rest.</p>
     <a href="https://github.com/HeinBloed32/SextantFix/releases/latest/download/SextantFix_Installer.exe" class="btn btn-primary" data-i18n="dl_btn">Für Windows herunterladen</a>
     <div class="os-note" data-i18n="dl_note">Windows 10 / 11</div>
+    <div class="dl-disclaimer"><strong data-i18n="dl_disc_label">Hinweis:</strong> <span data-i18n="dl_disclaimer">SextantFix ist ein Lern- und Trainingswerkzeug für astronomische und terrestrische Navigation. Es ist nicht als Navigationsmittel für den Seebetrieb zugelassen und enthält keine amtlichen, aktuellen Seekarten. Für die tatsächliche Navigation an Bord sind ausschließlich zugelassene Navigationsausrüstung und amtliche Seekarten zu verwenden.</span></div>
   </div>
 </section>
 
@@ -326,6 +357,13 @@
     <div class="foot-copy">© 2026 SextantFix</div>
   </div>
 </footer>
+
+<!-- LIGHTBOX (Klick auf Screenshot zeigt volles Bild) -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-hint" data-i18n="lb_hint">Klicken zum Schließen</div>
+</div>
 
 <script>
 const I18N={
@@ -348,15 +386,19 @@ const I18N={
     f4_h:"GRIB-Wetter",f4_p:"Wetterdaten laden und über der Karte darstellen — Wind und mehr, mit Zeitschieber.",
     f5_h:"Marken & Routen",f5_p:"Standlinien und Marken setzen, als CSV exportieren und GPX-Routen einlesen.",
     f6_h:"Dreisprachig",f6_p:"Vollständig auf Deutsch, Englisch und Französisch — Oberfläche und Meldungen.",
-    gal_eyebrow:"Ansichten",gal_h2:"Ein Blick ins Programm.",gal_p:"Screenshots folgen — hier entsteht eine Übersicht der wichtigsten Ansichten.",
-    gph:"— Screenshot folgt —",gph2:"— Screenshot folgt —",gph3:"— Screenshot folgt —",gph4:"— Screenshot folgt —",
+    gal_eyebrow:"Ansichten",gal_h2:"Ein Blick ins Programm.",gal_p:"Screenshots aus dem laufenden Betrieb — die wichtigsten Ansichten von SextantFix.",
     g1_h:"Standlinien & Fix",g1_p:"Beobachtungen als Standlinien auf der Seekarte, mit Schnittpunkt.",
-    g2_h:"GRIB-Wetter",g2_p:"Windfelder über der Karte, mit Zeitschieber.",
-    g3_h:"Offline-Seekarte",g3_p:"Küstenlinien und Kacheln, gespeichert für den Einsatz ohne Netz.",
-    g4_h:"Gestirnsdaten",g4_p:"Berechnete Höhen und Azimute für die Beobachtung.",
+    g2_h:"dazugehörige Tagbogenkurve",g2_p:"Der Tagesbogen der Sonne, berechnet aus den Messungen — Basis des Tagbogenverfahrens.",
+    g3_h:"Terrestrische Navigation",g3_p:"Peilungen zu Landmarken und Leuchttürmen, direkt auf der Seekarte.",
+    g4_h:"Offline-Seekarte",g4_p:"Küstenlinien und Kacheln, gespeichert für den Einsatz ohne Netz.",
+    g5_h:"GRIB-Wetter",g5_p:"Windfelder über der Karte, mit Zeitschieber.",
+    g6_h:"Nahtlose Zusammenarbeit mit qtVlm, Windy, Stellarium und Google Earth",
     dl_h:"Jetzt ausprobieren.",dl_p:"SextantFix ist kostenlos. Lade den Installer für Windows — die Installation erledigt den Rest.",
     dl_btn:"Für Windows herunterladen",dl_note:"Windows 10 / 11",
-    foot_gh:"GitHub",foot_how:"Verfahren",foot_dl:"Download"
+    dl_disc_label:"Hinweis:",
+    dl_disclaimer:"SextantFix ist ein Lern- und Trainingswerkzeug für astronomische und terrestrische Navigation. Es ist nicht als Navigationsmittel für den Seebetrieb zugelassen und enthält keine amtlichen, aktuellen Seekarten. Für die tatsächliche Navigation an Bord sind ausschließlich zugelassene Navigationsausrüstung und amtliche Seekarten zu verwenden.",
+    foot_gh:"GitHub",foot_how:"Verfahren",foot_dl:"Download",
+    lb_hint:"Klicken zum Schließen"
   },
   en:{
     nav_how:"Method",nav_features:"Features",nav_gallery:"Views",nav_download:"Download",
@@ -377,15 +419,19 @@ const I18N={
     f4_h:"GRIB weather",f4_p:"Load weather data and render it over the chart — wind and more, with a time slider.",
     f5_h:"Marks & routes",f5_p:"Set lines of position and marks, export as CSV and import GPX routes.",
     f6_h:"Trilingual",f6_p:"Fully in German, English and French — interface and messages.",
-    gal_eyebrow:"Views",gal_h2:"A look inside.",gal_p:"Screenshots coming — an overview of the main views is taking shape here.",
-    gph:"— screenshot coming —",gph2:"— screenshot coming —",gph3:"— screenshot coming —",gph4:"— screenshot coming —",
+    gal_eyebrow:"Views",gal_h2:"A look inside.",gal_p:"Screenshots from actual use — the main views of SextantFix.",
     g1_h:"Lines of position & fix",g1_p:"Observations as lines of position on the chart, with intersection.",
-    g2_h:"GRIB weather",g2_p:"Wind fields over the chart, with a time slider.",
-    g3_h:"Offline chart",g3_p:"Coastlines and tiles, stored for use without a network.",
-    g4_h:"Celestial data",g4_p:"Computed altitudes and azimuths for the observation.",
+    g2_h:"Corresponding diurnal arc",g2_p:"The sun's daily arc, computed from your sights — the basis of the Tagbogen method.",
+    g3_h:"Terrestrial navigation",g3_p:"Bearings to landmarks and lighthouses, right on the chart.",
+    g4_h:"Offline chart",g4_p:"Coastlines and tiles, stored for use without a network.",
+    g5_h:"GRIB weather",g5_p:"Wind fields over the chart, with a time slider.",
+    g6_h:"Seamless collaboration with qtVlm, Windy, Stellarium and Google Earth",
     dl_h:"Try it now.",dl_p:"SextantFix is free. Download the Windows installer — the setup does the rest.",
     dl_btn:"Download for Windows",dl_note:"Windows 10 / 11",
-    foot_gh:"GitHub",foot_how:"Method",foot_dl:"Download"
+    dl_disc_label:"Note:",
+    dl_disclaimer:"SextantFix is a learning and training tool for astronomical and terrestrial navigation. It is not approved as a means of navigation for actual sea operations and does not include official, up-to-date nautical charts. Real navigation on board must rely exclusively on approved navigation equipment and official charts.",
+    foot_gh:"GitHub",foot_how:"Method",foot_dl:"Download",
+    lb_hint:"Click to close"
   },
   fr:{
     nav_how:"Méthode",nav_features:"Fonctions",nav_gallery:"Vues",nav_download:"Télécharger",
@@ -406,15 +452,19 @@ const I18N={
     f4_h:"Météo GRIB",f4_p:"Chargez les données météo et affichez-les sur la carte — vent et plus, avec curseur temporel.",
     f5_h:"Amers & routes",f5_p:"Placez droites et amers, exportez en CSV et importez des routes GPX.",
     f6_h:"Trilingue",f6_p:"Entièrement en allemand, anglais et français — interface et messages.",
-    gal_eyebrow:"Vues",gal_h2:"Un aperçu du programme.",gal_p:"Captures d'écran à venir — un aperçu des vues principales prend forme ici.",
-    gph:"— capture à venir —",gph2:"— capture à venir —",gph3:"— capture à venir —",gph4:"— capture à venir —",
+    gal_eyebrow:"Vues",gal_h2:"Un aperçu du programme.",gal_p:"Captures d'écran en conditions réelles — les principales vues de SextantFix.",
     g1_h:"Droites & point",g1_p:"Observations en droites de hauteur sur la carte, avec intersection.",
-    g2_h:"Météo GRIB",g2_p:"Champs de vent sur la carte, avec curseur temporel.",
-    g3_h:"Carte hors ligne",g3_p:"Traits de côte et tuiles, stockés pour un usage sans réseau.",
-    g4_h:"Données astrales",g4_p:"Hauteurs et azimuts calculés pour l'observation.",
+    g2_h:"Courbe du Tagbogen correspondante",g2_p:"L'arc diurne du soleil, calculé à partir des observations — base de la méthode Tagbogen.",
+    g3_h:"Navigation terrestre",g3_p:"Relèvements vers des amers et phares, directement sur la carte.",
+    g4_h:"Carte hors ligne",g4_p:"Traits de côte et tuiles, stockés pour un usage sans réseau.",
+    g5_h:"Météo GRIB",g5_p:"Champs de vent sur la carte, avec curseur temporel.",
+    g6_h:"Collaboration transparente avec qtVlm, Windy, Stellarium et Google Earth",
     dl_h:"Essayez maintenant.",dl_p:"SextantFix est gratuit. Téléchargez l'installateur Windows — l'installation fait le reste.",
     dl_btn:"Télécharger pour Windows",dl_note:"Windows 10 / 11",
-    foot_gh:"GitHub",foot_how:"Méthode",foot_dl:"Télécharger"
+    dl_disc_label:"Remarque :",
+    dl_disclaimer:"SextantFix est un outil d'apprentissage et d'entraînement pour la navigation astronomique et terrestre. Il n'est pas homologué comme moyen de navigation en mer et ne contient pas de cartes marines officielles à jour. Pour la navigation réelle à bord, seuls des équipements de navigation homologués et des cartes marines officielles doivent être utilisés.",
+    foot_gh:"GitHub",foot_how:"Méthode",foot_dl:"Télécharger",
+    lb_hint:"Cliquez pour fermer"
   }
 };
 function setLang(lang){
@@ -429,6 +479,26 @@ function setLang(lang){
 document.querySelectorAll('.lang button').forEach(btn=>btn.addEventListener('click',()=>setLang(btn.getAttribute('data-lang'))));
 const nl=(navigator.language||'de').slice(0,2);
 setLang(['de','en','fr'].includes(nl)?nl:'de');
+
+// Lightbox: Klick auf Screenshot zeigt das volle, unbeschnittene Bild
+const lightbox=document.getElementById('lightbox');
+const lbImg=document.getElementById('lbImg');
+const lbClose=document.getElementById('lbClose');
+function openLightbox(src, alt){
+  lbImg.src=src;
+  lbImg.alt=alt||'';
+  lightbox.classList.add('on');
+}
+function closeLightbox(){
+  lightbox.classList.remove('on');
+  lbImg.src='';
+}
+document.querySelectorAll('.gcard .frame img').forEach(img=>{
+  img.addEventListener('click', ()=>openLightbox(img.src, img.alt));
+});
+lightbox.addEventListener('click', closeLightbox);
+lbClose.addEventListener('click', (e)=>{ e.stopPropagation(); closeLightbox(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
 </script>
 </body>
 </html>
