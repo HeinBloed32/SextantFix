@@ -1,0 +1,106 @@
+{
+  "version": "TN-measurements-v2",
+  "name": "Labradorsee_55.00 Grad N_50.00 Grad W",
+  "exported_at_utc": "2025-12-31T17:10:09Z",
+  "recommended": {
+    "hemisphere": "N",
+    "sun_dir": "S",
+    "limb": "LL",
+    "course_deg": 0.0,
+    "speed_kn": 0.0,
+    "approx_lat": 55.0,
+    "approx_lon": -50.0
+  },
+  "measurements": [
+    {
+      "utc_display": "21-06-2025 14:37:00",
+      "utc_iso": "2025-06-21T14:37:00Z",
+      "hdeg": 57.0,
+      "hmin": 6.7,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 14:47:00",
+      "utc_iso": "2025-06-21T14:47:00Z",
+      "hdeg": 57.0,
+      "hmin": 33.2,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 14:57:00",
+      "utc_iso": "2025-06-21T14:57:00Z",
+      "hdeg": 57.0,
+      "hmin": 55.1,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:07:00",
+      "utc_iso": "2025-06-21T15:07:00Z",
+      "hdeg": 58.0,
+      "hmin": 5.6,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:17:00",
+      "utc_iso": "2025-06-21T15:17:00Z",
+      "hdeg": 58.0,
+      "hmin": 11.3,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:27:00",
+      "utc_iso": "2025-06-21T15:27:00Z",
+      "hdeg": 58.0,
+      "hmin": 11.2,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:37:00",
+      "utc_iso": "2025-06-21T15:37:00Z",
+      "hdeg": 58.0,
+      "hmin": 4.8,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:47:00",
+      "utc_iso": "2025-06-21T15:47:00Z",
+      "hdeg": 57.0,
+      "hmin": 54.1,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:57:00",
+      "utc_iso": "2025-06-21T15:57:00Z",
+      "hdeg": 57.0,
+      "hmin": 35.2,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 16:07:00",
+      "utc_iso": "2025-06-21T16:07:00Z",
+      "hdeg": 57.0,
+      "hmin": 8.0,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    }
+  ]
+}

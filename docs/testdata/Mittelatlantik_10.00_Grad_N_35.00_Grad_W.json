@@ -1,0 +1,106 @@
+{
+  "version": "TN-measurements-v2",
+  "name": "Mittelatlantik_10.00 Grad N_35.00 Grad W",
+  "exported_at_utc": "2025-12-31T17:10:09Z",
+  "recommended": {
+    "hemisphere": "N",
+    "sun_dir": "S",
+    "limb": "LL",
+    "course_deg": 0.0,
+    "speed_kn": 0.0,
+    "approx_lat": 10.0,
+    "approx_lon": -35.0
+  },
+  "measurements": [
+    {
+      "utc_display": "20-03-2025 13:42:00",
+      "utc_iso": "2025-03-20T13:42:00Z",
+      "hdeg": 74.0,
+      "hmin": 45.0,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "20-03-2025 13:52:00",
+      "utc_iso": "2025-03-20T13:52:00Z",
+      "hdeg": 76.0,
+      "hmin": 30.2,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "20-03-2025 14:02:00",
+      "utc_iso": "2025-03-20T14:02:00Z",
+      "hdeg": 78.0,
+      "hmin": 1.6,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "20-03-2025 14:12:00",
+      "utc_iso": "2025-03-20T14:12:00Z",
+      "hdeg": 79.0,
+      "hmin": 8.8,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "20-03-2025 14:22:00",
+      "utc_iso": "2025-03-20T14:22:00Z",
+      "hdeg": 79.0,
+      "hmin": 47.6,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "20-03-2025 14:32:00",
+      "utc_iso": "2025-03-20T14:32:00Z",
+      "hdeg": 79.0,
+      "hmin": 50.0,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "20-03-2025 14:42:00",
+      "utc_iso": "2025-03-20T14:42:00Z",
+      "hdeg": 79.0,
+      "hmin": 12.3,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "20-03-2025 14:52:00",
+      "utc_iso": "2025-03-20T14:52:00Z",
+      "hdeg": 78.0,
+      "hmin": 9.9,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "20-03-2025 15:02:00",
+      "utc_iso": "2025-03-20T15:02:00Z",
+      "hdeg": 76.0,
+      "hmin": 38.9,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "20-03-2025 15:12:00",
+      "utc_iso": "2025-03-20T15:12:00Z",
+      "hdeg": 74.0,
+      "hmin": 56.0,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    }
+  ]
+}

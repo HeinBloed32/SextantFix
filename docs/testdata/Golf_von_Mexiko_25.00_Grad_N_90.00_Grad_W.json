@@ -1,0 +1,106 @@
+{
+  "version": "TN-measurements-v2",
+  "name": "Golf von Mexiko_25.00 Grad N_90.00 Grad W",
+  "exported_at_utc": "2025-12-31T17:10:09Z",
+  "recommended": {
+    "hemisphere": "N",
+    "sun_dir": "S",
+    "limb": "LL",
+    "course_deg": 0.0,
+    "speed_kn": 0.0,
+    "approx_lat": 25.0,
+    "approx_lon": -90.0
+  },
+  "measurements": [
+    {
+      "utc_display": "21-06-2025 17:17:00",
+      "utc_iso": "2025-06-21T17:17:00Z",
+      "hdeg": 79.0,
+      "hmin": 25.3,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 17:27:00",
+      "utc_iso": "2025-06-21T17:27:00Z",
+      "hdeg": 81.0,
+      "hmin": 40.6,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 17:37:00",
+      "utc_iso": "2025-06-21T17:37:00Z",
+      "hdeg": 83.0,
+      "hmin": 52.0,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 17:47:00",
+      "utc_iso": "2025-06-21T17:47:00Z",
+      "hdeg": 86.0,
+      "hmin": 0.4,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 17:57:00",
+      "utc_iso": "2025-06-21T17:57:00Z",
+      "hdeg": 87.0,
+      "hmin": 50.5,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 18:07:00",
+      "utc_iso": "2025-06-21T18:07:00Z",
+      "hdeg": 87.0,
+      "hmin": 49.4,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 18:17:00",
+      "utc_iso": "2025-06-21T18:17:00Z",
+      "hdeg": 86.0,
+      "hmin": 1.5,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 18:27:00",
+      "utc_iso": "2025-06-21T18:27:00Z",
+      "hdeg": 83.0,
+      "hmin": 53.4,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 18:37:00",
+      "utc_iso": "2025-06-21T18:37:00Z",
+      "hdeg": 81.0,
+      "hmin": 36.3,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 18:47:00",
+      "utc_iso": "2025-06-21T18:47:00Z",
+      "hdeg": 79.0,
+      "hmin": 22.8,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "version": "TN-measurements-v2",
+  "name": "Sargassosee_30.00 Grad N_60.00 Grad W",
+  "exported_at_utc": "2025-12-31T17:10:09Z",
+  "recommended": {
+    "hemisphere": "N",
+    "sun_dir": "S",
+    "limb": "LL",
+    "course_deg": 0.0,
+    "speed_kn": 0.0,
+    "approx_lat": 30.0,
+    "approx_lon": -60.0
+  },
+  "measurements": [
+    {
+      "utc_display": "21-06-2025 15:17:00",
+      "utc_iso": "2025-06-21T15:17:00Z",
+      "hdeg": 77.0,
+      "hmin": 49.8,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:27:00",
+      "utc_iso": "2025-06-21T15:27:00Z",
+      "hdeg": 79.0,
+      "hmin": 36.5,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:37:00",
+      "utc_iso": "2025-06-21T15:37:00Z",
+      "hdeg": 81.0,
+      "hmin": 9.3,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:47:00",
+      "utc_iso": "2025-06-21T15:47:00Z",
+      "hdeg": 82.0,
+      "hmin": 25.0,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 15:57:00",
+      "utc_iso": "2025-06-21T15:57:00Z",
+      "hdeg": 83.0,
+      "hmin": 6.6,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 16:07:00",
+      "utc_iso": "2025-06-21T16:07:00Z",
+      "hdeg": 83.0,
+      "hmin": 6.8,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 16:17:00",
+      "utc_iso": "2025-06-21T16:17:00Z",
+      "hdeg": 82.0,
+      "hmin": 26.4,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 16:27:00",
+      "utc_iso": "2025-06-21T16:27:00Z",
+      "hdeg": 81.0,
+      "hmin": 8.2,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 16:37:00",
+      "utc_iso": "2025-06-21T16:37:00Z",
+      "hdeg": 79.0,
+      "hmin": 33.5,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 16:47:00",
+      "utc_iso": "2025-06-21T16:47:00Z",
+      "hdeg": 77.0,
+      "hmin": 45.3,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    }
+  ]
+}

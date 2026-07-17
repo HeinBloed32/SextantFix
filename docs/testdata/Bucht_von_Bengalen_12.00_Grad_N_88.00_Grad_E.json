@@ -1,0 +1,106 @@
+{
+  "version": "TN-measurements-v2",
+  "name": "Bucht von Bengalen_12.00 Grad N_88.00 Grad E",
+  "exported_at_utc": "2025-12-31T17:10:09Z",
+  "recommended": {
+    "hemisphere": "N",
+    "sun_dir": "N",
+    "limb": "LL",
+    "course_deg": 0.0,
+    "speed_kn": 0.0,
+    "approx_lat": 12.0,
+    "approx_lon": 88.0
+  },
+  "measurements": [
+    {
+      "utc_display": "21-06-2025 05:25:00",
+      "utc_iso": "2025-06-21T05:25:00Z",
+      "hdeg": 74.0,
+      "hmin": 7.5,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 05:35:00",
+      "utc_iso": "2025-06-21T05:35:00Z",
+      "hdeg": 75.0,
+      "hmin": 38.8,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 05:45:00",
+      "utc_iso": "2025-06-21T05:45:00Z",
+      "hdeg": 76.0,
+      "hmin": 56.8,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 05:55:00",
+      "utc_iso": "2025-06-21T05:55:00Z",
+      "hdeg": 77.0,
+      "hmin": 49.7,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 06:05:00",
+      "utc_iso": "2025-06-21T06:05:00Z",
+      "hdeg": 78.0,
+      "hmin": 15.6,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 06:15:00",
+      "utc_iso": "2025-06-21T06:15:00Z",
+      "hdeg": 78.0,
+      "hmin": 18.4,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 06:25:00",
+      "utc_iso": "2025-06-21T06:25:00Z",
+      "hdeg": 77.0,
+      "hmin": 46.8,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 06:35:00",
+      "utc_iso": "2025-06-21T06:35:00Z",
+      "hdeg": 76.0,
+      "hmin": 53.0,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 06:45:00",
+      "utc_iso": "2025-06-21T06:45:00Z",
+      "hdeg": 75.0,
+      "hmin": 38.1,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    },
+    {
+      "utc_display": "21-06-2025 06:55:00",
+      "utc_iso": "2025-06-21T06:55:00Z",
+      "hdeg": 74.0,
+      "hmin": 5.8,
+      "indexError": 0.0,
+      "eyeHeight": 2.0,
+      "active": true
+    }
+  ]
+}

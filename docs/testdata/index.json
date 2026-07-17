@@ -1,0 +1,22 @@
+[
+  { "file": "Arabisches_Meer_15.00_Grad_N_60.00_Grad_E.json", "label": "Arabisches Meer (15°N, 60°O)" },
+  { "file": "Beringmeer_57.00_Grad_N_170.00_Grad_W.json", "label": "Beringmeer (57°N, 170°W)" },
+  { "file": "Biskaya_Atlantik_45.00_Grad_N_8.00_Grad_W.json", "label": "Biskaya / Atlantik (45°N, 8°W)" },
+  { "file": "Bucht_von_Bengalen_12.00_Grad_N_88.00_Grad_E.json", "label": "Bucht von Bengalen (12°N, 88°O)" },
+  { "file": "Golf_von_Mexiko_25.00_Grad_N_90.00_Grad_W.json", "label": "Golf von Mexiko (25°N, 90°W)" },
+  { "file": "Karibisches_Meer_16.00_Grad_N_70.00_Grad_W.json", "label": "Karibisches Meer (16°N, 70°W)" },
+  { "file": "Korallenmeer_18.00_Grad_S_155.00_Grad_E.json", "label": "Korallenmeer (18°S, 155°O)" },
+  { "file": "Labradorsee_55.00_Grad_N_50.00_Grad_W.json", "label": "Labradorsee (55°N, 50°W)" },
+  { "file": "Mittelatlantik_10.00_Grad_N_35.00_Grad_W.json", "label": "Mittelatlantik (10°N, 35°W)" },
+  { "file": "Nordatlantik_Azorenregion_38.00_Grad_N_30.00_Grad_W.json", "label": "Nordatlantik / Azorenregion (38°N, 30°W)" },
+  { "file": "Nordpazifik_35.00_Grad_N_150.00_Grad_W.json", "label": "Nordpazifik (35°N, 150°W)" },
+  { "file": "Norwegische_See_62.00_Grad_N_2.00_Grad_E.json", "label": "Norwegische See (62°N, 2°O)" },
+  { "file": "Philippinensee_18.00_Grad_N_130.00_Grad_E.json", "label": "Philippinensee (18°N, 130°O)" },
+  { "file": "Sargassosee_30.00_Grad_N_60.00_Grad_W.json", "label": "Sargassosee (30°N, 60°W)" },
+  { "file": "Suedatlantik_25.00_Grad_S_15.00_Grad_W.json", "label": "Südatlantik (25°S, 15°W)" },
+  { "file": "Suedchinesisches_Meer_10.00_Grad_N_115.00_Grad_E.json", "label": "Südchinesisches Meer (10°N, 115°O)" },
+  { "file": "Suedindischer_Ozean_30.00_Grad_S_80.00_Grad_E.json", "label": "Südindischer Ozean (30°S, 80°O)" },
+  { "file": "Suedpazifik_20.00_Grad_S_140.00_Grad_W.json", "label": "Südpazifik (20°S, 140°W)" },
+  { "file": "Tasmansee_40.00_Grad_S_160.00_Grad_E.json", "label": "Tasmansee (40°S, 160°O)" },
+  { "file": "Zentralpazifik_5.00_Grad_N_160.00_Grad_W.json", "label": "Zentralpazifik (5°N, 160°W)" }
+]
