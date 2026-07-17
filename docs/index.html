@@ -303,9 +303,9 @@
       </div>
       <div class="gcard">
         <div class="frame">
-          <img src="screenshots/terrestrische-navigation.jpg" alt="Terrestrische Navigation">
+          <img src="screenshots/terrestrische-navigation.png" alt="Terrestrische Navigation und Versegelungspeilung">
         </div>
-        <div class="cap"><h4 data-i18n="g3_h">Terrestrische Navigation</h4><p data-i18n="g3_p">Peilungen zu Landmarken und Leuchttürmen, direkt auf der Seekarte.</p></div>
+        <div class="cap"><h4 data-i18n="g3_h">Terrestrische Navigation &amp; Versegelung</h4><p data-i18n="g3_p">Peilungen zu Landmarken und Leuchttürmen — inklusive Versegelungspeilung für die klassische Standortbestimmung unterwegs.</p></div>
       </div>
       <div class="gcard">
         <div class="frame">
@@ -321,9 +321,21 @@
       </div>
       <div class="gcard">
         <div class="frame">
-          <img src="screenshots/integration-uebersicht.png" alt="Anbindung an qtVlm, Windy, Stellarium und Google Earth">
+          <img src="screenshots/meteorologie.png" alt="Meteorologische Bodenwetterkarten mit Bootsposition">
         </div>
-        <div class="cap"><h4 data-i18n="g6_h">Nahtlose Zusammenarbeit mit qtVlm, Windy, Stellarium und Google Earth</h4></div>
+        <div class="cap"><h4 data-i18n="g7_h">Meteorologische Karten</h4><p data-i18n="g7_p">Analysierte Bodenwetterkarten (DWD, NOAA) mit Bootsposition — inklusive Windmessung aus Isobaren-Abstand nach David Burch.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/leuchtfeuer.gif" alt="Leuchtfeuer-Datenbank weltweit">
+        </div>
+        <div class="cap"><h4 data-i18n="g8_h">Leuchtfeuer weltweit</h4><p data-i18n="g8_p">Direkter Sprung zur Leuchtfeuer-Datenbank von Frank Schmirler, mit aktueller Position und Zoomstufe.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/integration-uebersicht.png" alt="Anbindung an qtVlm, Windy, Wetterkarten, Stellarium, Google Earth und Leuchtfeuer">
+        </div>
+        <div class="cap"><h4 data-i18n="g6_h">Nahtlose Zusammenarbeit mit qtVlm, Windy, Wetterkarten, Stellarium, Google Earth und Leuchtfeuer-Datenbank</h4></div>
       </div>
     </div>
   </div>
@@ -389,10 +401,12 @@ const I18N={
     gal_eyebrow:"Ansichten",gal_h2:"Ein Blick ins Programm.",gal_p:"Screenshots aus dem laufenden Betrieb — die wichtigsten Ansichten von SextantFix.",
     g1_h:"Standlinien & Fix",g1_p:"Beobachtungen als Standlinien auf der Seekarte, mit Schnittpunkt.",
     g2_h:"dazugehörige Tagbogenkurve",g2_p:"Der Tagesbogen der Sonne, berechnet aus den Messungen — Basis des Tagbogenverfahrens.",
-    g3_h:"Terrestrische Navigation",g3_p:"Peilungen zu Landmarken und Leuchttürmen, direkt auf der Seekarte.",
+    g3_h:"Terrestrische Navigation & Versegelung",g3_p:"Peilungen zu Landmarken und Leuchttürmen — inklusive Versegelungspeilung für die klassische Standortbestimmung unterwegs.",
     g4_h:"Offline-Seekarte",g4_p:"Küstenlinien und Kacheln, gespeichert für den Einsatz ohne Netz.",
     g5_h:"GRIB-Wetter",g5_p:"Windfelder über der Karte, mit Zeitschieber.",
-    g6_h:"Nahtlose Zusammenarbeit mit qtVlm, Windy, Stellarium und Google Earth",
+    g6_h:"Nahtlose Zusammenarbeit mit qtVlm, Windy, Wetterkarten, Stellarium, Google Earth und Leuchtfeuer-Datenbank",
+    g7_h:"Meteorologische Karten",g7_p:"Analysierte Bodenwetterkarten (DWD, NOAA) mit Bootsposition — inklusive Windmessung aus Isobaren-Abstand nach David Burch.",
+    g8_h:"Leuchtfeuer weltweit",g8_p:"Direkter Sprung zur Leuchtfeuer-Datenbank von Frank Schmirler, mit aktueller Position und Zoomstufe.",
     dl_h:"Jetzt ausprobieren.",dl_p:"SextantFix ist kostenlos. Lade den Installer für Windows — die Installation erledigt den Rest.",
     dl_btn:"Für Windows herunterladen",dl_note:"Windows 10 / 11",
     dl_disc_label:"Hinweis:",
@@ -422,10 +436,12 @@ const I18N={
     gal_eyebrow:"Views",gal_h2:"A look inside.",gal_p:"Screenshots from actual use — the main views of SextantFix.",
     g1_h:"Lines of position & fix",g1_p:"Observations as lines of position on the chart, with intersection.",
     g2_h:"Corresponding diurnal arc",g2_p:"The sun's daily arc, computed from your sights — the basis of the Tagbogen method.",
-    g3_h:"Terrestrial navigation",g3_p:"Bearings to landmarks and lighthouses, right on the chart.",
+    g3_h:"Terrestrial Navigation & Running Fix",g3_p:"Bearings to landmarks and lighthouses — including running fix for classic underway positioning.",
     g4_h:"Offline chart",g4_p:"Coastlines and tiles, stored for use without a network.",
     g5_h:"GRIB weather",g5_p:"Wind fields over the chart, with a time slider.",
-    g6_h:"Seamless collaboration with qtVlm, Windy, Stellarium and Google Earth",
+    g6_h:"Seamless collaboration with qtVlm, Windy, weather charts, Stellarium, Google Earth and lighthouse database",
+    g7_h:"Weather Charts",g7_p:"Analysed surface weather charts (DWD, NOAA) with boat position — including wind speed from isobar spacing per David Burch.",
+    g8_h:"Lighthouses Worldwide",g8_p:"Direct link to Frank Schmirler's lighthouse database, with current position and zoom level.",
     dl_h:"Try it now.",dl_p:"SextantFix is free. Download the Windows installer — the setup does the rest.",
     dl_btn:"Download for Windows",dl_note:"Windows 10 / 11",
     dl_disc_label:"Note:",
@@ -455,10 +471,12 @@ const I18N={
     gal_eyebrow:"Vues",gal_h2:"Un aperçu du programme.",gal_p:"Captures d'écran en conditions réelles — les principales vues de SextantFix.",
     g1_h:"Droites & point",g1_p:"Observations en droites de hauteur sur la carte, avec intersection.",
     g2_h:"Courbe du Tagbogen correspondante",g2_p:"L'arc diurne du soleil, calculé à partir des observations — base de la méthode Tagbogen.",
-    g3_h:"Navigation terrestre",g3_p:"Relèvements vers des amers et phares, directement sur la carte.",
+    g3_h:"Navigation terrestre & point courant",g3_p:"Relèvements vers des amers et phares — avec point courant (recoupement) pour la navigation classique en mer.",
     g4_h:"Carte hors ligne",g4_p:"Traits de côte et tuiles, stockés pour un usage sans réseau.",
     g5_h:"Météo GRIB",g5_p:"Champs de vent sur la carte, avec curseur temporel.",
-    g6_h:"Collaboration transparente avec qtVlm, Windy, Stellarium et Google Earth",
+    g6_h:"Collaboration transparente avec qtVlm, Windy, cartes météo, Stellarium, Google Earth et base de données des phares",
+    g7_h:"Cartes météorologiques",g7_p:"Cartes d'analyse au sol (DWD, NOAA) avec la position du bateau — avec mesure du vent selon l'écart isobare (méthode David Burch).",
+    g8_h:"Phares du monde entier",g8_p:"Lien direct vers la base de données des phares de Frank Schmirler, avec la position et le niveau de zoom actuels.",
     dl_h:"Essayez maintenant.",dl_p:"SextantFix est gratuit. Téléchargez l'installateur Windows — l'installation fait le reste.",
     dl_btn:"Télécharger pour Windows",dl_note:"Windows 10 / 11",
     dl_disc_label:"Remarque :",
