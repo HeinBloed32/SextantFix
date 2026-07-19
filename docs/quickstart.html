@@ -332,9 +332,10 @@ function toggleAcc(id){
     item.classList.add('open');
     const body = item.querySelector('.acc-body');
     if (body) body.style.maxHeight = body.scrollHeight + 'px';
-    // Explizit zum Anfang des Absatzes springen (Kopfzeile bleibt oben sichtbar) —
-    // dem Browser überlassen führt bei großen Höhenänderungen zum Sprung ans Ende.
-    item.scrollIntoView({behavior:'smooth', block:'start'});
+    // Erst NACH Abschluss der 0.3s-Übergänge scrollen (Öffnen UND ein evtl.
+    // gleichzeitiges Zuklappen eines anderen Absatzes) — sonst verschiebt sich
+    // die Zielposition noch während des Scrollens.
+    setTimeout(()=>item.scrollIntoView({behavior:'smooth', block:'start'}), 320);
   }
 }
 // Direkt zu einem Punkt springen und aufklappen, z.B. quickstart.html#step2
