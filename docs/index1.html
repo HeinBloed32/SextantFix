@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SextantFix — Astronavigation leicht gemacht</title>
+<style>
+  :root{
+    --bg:        #0a1420;
+    --bg-soft:   #0f1c2b;
+    --panel:     #13263a;
+    --ink:       #e6eef5;
+    --ink-dim:   #8ba3ba;
+    --cyan:      #38d5e0;
+    --cyan-deep: #1b9aa8;
+    --brass:     #c9a86a;
+    --line:      #22394f;
+    --maxw:      1180px;
+    --mono: "SF Mono","JetBrains Mono","Fira Code",ui-monospace,"Cascadia Code",Consolas,monospace;
+    --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+
+  /* ---------- Header ---------- */
+  header{ position:sticky; top:0; z-index:50; background:rgba(10,20,32,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .brand{ display:flex; align-items:center; gap:11px; font-family:var(--mono); font-weight:600; letter-spacing:.5px; }
+  .brand .logo{ width:30px; height:30px; flex:none; }
+  .brand b{ color:var(--ink); font-size:1.05rem; }
+  .brand b span{ color:var(--cyan); }
+  .nav-links{ display:flex; align-items:center; gap:28px; }
+  .nav-links a{ font-family:var(--mono); font-size:.82rem; letter-spacing:.6px; color:var(--ink-dim); text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover{ color:var(--cyan); }
+  .lang{ display:flex; gap:2px; font-family:var(--mono); font-size:.78rem; }
+  .lang button{ background:none; border:1px solid var(--line); color:var(--ink-dim); padding:5px 9px; cursor:pointer; letter-spacing:.5px; transition:all .2s; }
+  .lang button:first-child{ border-radius:5px 0 0 5px; }
+  .lang button:last-child{ border-radius:0 5px 5px 0; }
+  .lang button:not(:first-child){ border-left:none; }
+  .lang button.on{ background:var(--cyan); color:var(--bg); border-color:var(--cyan); font-weight:600; }
+
+  /* ---------- Hero mit Foto ---------- */
+  .hero{ position:relative; min-height:620px; display:flex; align-items:center; }
+  .hero-bg{ position:absolute; inset:0; z-index:0; overflow:hidden; }
+  .hero-bg img{ width:100%; height:100%; object-fit:cover; object-position:center; }
+  /* Abdunkelung links (für Textlesbarkeit) -> transparent rechts (Foto sichtbar) */
+  .hero-bg::after{
+    content:""; position:absolute; inset:0;
+    background:
+      linear-gradient(90deg, rgba(10,20,32,.86) 0%, rgba(10,20,32,.62) 40%, rgba(10,20,32,.12) 72%, rgba(10,20,32,.30) 100%),
+      linear-gradient(0deg, rgba(10,20,32,.5) 0%, transparent 38%);
+  }
+  .hero-inner{ position:relative; z-index:2; padding:90px 0; width:100%; }
+  .hero-copy{ max-width:38em; }
+  .eyebrow{ font-family:var(--mono); font-size:.78rem; letter-spacing:2px; color:var(--cyan); text-transform:uppercase; margin-bottom:22px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .eyebrow .dot{ width:5px; height:5px; background:var(--brass); border-radius:50%; }
+  h1{ font-size:clamp(2.3rem,5.5vw,3.9rem); line-height:1.04; letter-spacing:-1px; font-weight:800; margin-bottom:22px; }
+  h1 .accent{ color:var(--cyan); }
+  .lead{ color:var(--ink); font-size:1.1rem; max-width:33em; margin-bottom:32px; opacity:.92; }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px; }
+  .btn{ font-family:var(--mono); font-size:.86rem; letter-spacing:.8px; padding:14px 26px; border-radius:8px; cursor:pointer; text-transform:uppercase; font-weight:600; transition:all .2s; display:inline-flex; align-items:center; gap:10px; border:1px solid transparent; }
+  .btn-primary{ background:var(--cyan); color:var(--bg); }
+  .btn-primary:hover{ background:#5ce2ec; transform:translateY(-2px); box-shadow:0 8px 24px rgba(56,213,224,.25); }
+  .btn-ghost{ background:rgba(10,20,32,.4); border-color:var(--line); color:var(--ink); }
+  .btn-ghost:hover{ border-color:var(--cyan); color:var(--cyan); }
+  .hero-flags{ display:flex; gap:22px; flex-wrap:wrap; font-family:var(--mono); font-size:.8rem; color:var(--ink-dim); }
+  .hero-flags span{ display:flex; align-items:center; gap:8px; }
+  .hero-flags .d{ width:6px; height:6px; border-radius:50%; background:var(--cyan); }
+
+  /* ---------- Section-Grundlagen ---------- */
+  section.block{ padding:78px 0; }
+  .sec-head{ margin-bottom:46px; max-width:42em; }
+  .sec-eyebrow{ font-family:var(--mono); font-size:.76rem; letter-spacing:2px; color:var(--brass); text-transform:uppercase; margin-bottom:14px; }
+  .sec-head h2{ font-size:clamp(1.7rem,3.4vw,2.4rem); letter-spacing:-.5px; line-height:1.15; }
+  .sec-head p{ color:var(--ink-dim); margin-top:14px; font-size:1.02rem; }
+
+  /* ---------- Verfahren (3 Schritte) ---------- */
+  .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .step{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:28px; transition:all .25s; }
+  .step:hover{ border-color:var(--cyan-deep); transform:translateY(-3px); }
+  .step .n{ font-family:var(--mono); color:var(--brass); font-size:.9rem; margin-bottom:14px; }
+  .step h3{ font-size:1.12rem; margin-bottom:10px; letter-spacing:-.2px; }
+  .step p{ color:var(--ink-dim); font-size:.94rem; }
+
+  /* ---------- Features ---------- */
+  .features{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .feat{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:28px; transition:all .25s; }
+  .feat:hover{ border-color:var(--cyan-deep); transform:translateY(-3px); }
+  .feat .ic{ width:36px; height:36px; margin-bottom:16px; color:var(--cyan); }
+  .feat h3{ font-size:1.1rem; margin-bottom:10px; letter-spacing:-.2px; }
+  .feat p{ color:var(--ink-dim); font-size:.93rem; }
+
+  /* ---------- Screenshot-Galerie ---------- */
+  .gallery{ display:grid; grid-template-columns:repeat(2,1fr); gap:22px; }
+  .gcard{ background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; transition:all .25s; }
+  .gcard:hover{ border-color:var(--cyan-deep); transform:translateY(-3px); }
+  .gcard.wide{ grid-column:span 2; }
+  .gcard .frame{
+    aspect-ratio:16/10;
+    min-height:180px;
+    background:var(--bg);
+    display:flex; align-items:center; justify-content:center; position:relative;
+    overflow:hidden;
+  }
+  .gcard .frame img{ width:100%; height:100%; object-fit:cover; object-position:top center; display:block; cursor:zoom-in; }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox{ position:fixed; inset:0; z-index:200; background:rgba(6,12,20,.92); display:flex; align-items:center; justify-content:center; padding:32px; cursor:zoom-out; opacity:0; visibility:hidden; transition:opacity .2s; }
+  .lightbox.on{ opacity:1; visibility:visible; }
+  .lightbox img{ max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,.5); }
+  .lightbox .lb-close{ position:absolute; top:20px; right:28px; font-family:var(--mono); font-size:1.6rem; color:var(--ink-dim); background:none; border:none; cursor:pointer; line-height:1; transition:color .2s; }
+  .lightbox .lb-close:hover{ color:var(--cyan); }
+  .lightbox .lb-hint{ position:absolute; bottom:20px; left:0; right:0; text-align:center; font-family:var(--mono); font-size:.72rem; color:var(--ink-dim); letter-spacing:.5px; }
+  .gcard .cap{ padding:16px 20px; border-top:1px solid var(--line); }
+  .gcard .cap h4{ font-size:1rem; margin-bottom:4px; }
+  .gcard .cap p{ color:var(--ink-dim); font-size:.86rem; }
+
+  /* ---------- Download ---------- */
+  .download{ text-align:center; padding:84px 0; background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .download h2{ font-size:clamp(1.9rem,4vw,2.6rem); letter-spacing:-.5px; margin-bottom:16px; }
+  .download p{ color:var(--ink-dim); max-width:34em; margin:0 auto 30px; }
+  .os-note{ font-family:var(--mono); font-size:.76rem; color:var(--ink-dim); margin-top:20px; letter-spacing:.5px; }
+  .dl-disclaimer{
+    max-width:520px;
+    margin:22px auto 0;
+    padding:14px 18px;
+    background:rgba(201,168,106,.08);
+    border:1px solid rgba(201,168,106,.35);
+    border-radius:8px;
+    font-size:.82rem;
+    line-height:1.55;
+    color:var(--ink-dim);
+    text-align:left;
+  }
+  .dl-disclaimer strong{ color:var(--ink); }
+
+  /* ---------- Footer ---------- */
+  footer{ padding:40px 0; }
+  .foot{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+  .foot-links{ display:flex; gap:24px; font-family:var(--mono); font-size:.8rem; }
+  .foot-links a{ color:var(--ink-dim); transition:color .2s; }
+  .foot-links a:hover{ color:var(--cyan); }
+  .foot-copy{ font-family:var(--mono); font-size:.74rem; color:var(--ink-dim); letter-spacing:.5px; }
+
+  @media(max-width:880px){
+    .nav-links{ display:none; }
+    .steps,.features{ grid-template-columns:1fr; }
+    .gallery{ grid-template-columns:1fr; }
+    .gcard.wide{ grid-column:span 1; }
+    .hero-bg::after{ background:linear-gradient(0deg, rgba(10,20,32,.92) 10%, rgba(10,20,32,.55) 60%, rgba(10,20,32,.4) 100%); }
+  }
+  [hidden]{ display:none !important; }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 40 40" fill="none">
+        <path d="M6 32 A26 26 0 0 1 32 6" stroke="var(--brass)" stroke-width="2.5" fill="none"/>
+        <path d="M6 32 L20 12 L32 32 Z" stroke="var(--cyan)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <circle cx="20" cy="12" r="2.2" fill="var(--cyan)"/>
+        <circle cx="27" cy="9" r="1.4" fill="var(--brass)"/>
+      </svg>
+      <b>Sextant<span>Fix</span></b>
+    </div>
+    <nav class="nav-links">
+      <a href="#how" data-i18n="nav_how">Verfahren</a>
+      <a href="#features" data-i18n="nav_features">Funktionen</a>
+      <a href="#gallery" data-i18n="nav_gallery">Ansichten</a>
+      <a href="tutorials.html" data-i18n="nav_tutorials">Tutorials</a>
+      <a href="#download" data-i18n="nav_download">Download</a>
+    </nav>
+    <div class="lang">
+      <button data-lang="de" class="on">DE</button>
+      <button data-lang="en">EN</button>
+      <button data-lang="fr">FR</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO mit Foto -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <img src="hero-sextant.png" alt="">
+  </div>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <div class="eyebrow">
+        <span data-i18n="hero_eyebrow">Astronomische Navigation</span>
+        <span class="dot"></span>
+        <span>Windows</span>
+      </div>
+      <h1><span class="accent" data-i18n="hero_h1a">Astronavigation</span> <span data-i18n="hero_h1b">leicht gemacht.</span></h1>
+      <p class="lead" data-i18n="hero_lead">Bestimme deinen Standort aus der Beobachtung von Sonne, Planeten und Sternen — ganz ohne GPS. SextantFix übernimmt die Rechenarbeit hinter dem Tagbogenverfahren und der St.-Hilaire-Methode.</p>
+      <div class="cta-row">
+        <a href="#download" class="btn btn-primary" data-i18n="hero_cta1">Herunterladen</a>
+        <a href="#how" class="btn btn-ghost" data-i18n="hero_cta2">So funktioniert es</a>
+      </div>
+      <div class="hero-flags">
+        <span><i class="d"></i><span data-i18n="flag1">Läuft offline</span></span>
+        <span><i class="d"></i><span data-i18n="flag2">Dreisprachig DE/EN/FR</span></span>
+        <span><i class="d"></i><span data-i18n="flag3">Kostenlos</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VERFAHREN -->
+<section class="block" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow" data-i18n="how_eyebrow">Vom Gestirn zur Position</div>
+      <h2 data-i18n="how_h2">Wie eine Beobachtung zum Standort wird.</h2>
+      <p data-i18n="how_p">Das Prinzip der Astronavigation ist Jahrhunderte alt. SextantFix nimmt dir nur die mühsame Handrechnung ab — den Rest machst du selbst.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">01</div>
+        <h3 data-i18n="s1_h">Gestirn messen</h3>
+        <p data-i18n="s1_p">Miss die Höhe eines Sterns, der Sonne oder eines Planeten mit dem Sextanten — oder im Simulator.</p>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <h3 data-i18n="s2_h">Standlinie berechnen</h3>
+        <p data-i18n="s2_p">SextantFix reduziert die Beobachtung per Tagbogenverfahren oder St.-Hilaire-Methode zu einer Standlinie auf der Karte.</p>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h3 data-i18n="s3_h">Position im Schnittpunkt</h3>
+        <p data-i18n="s3_p">Zwei oder mehr Standlinien schneiden sich. Der Schnittpunkt ist dein Schiffsort — bestimmt allein aus dem Himmel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNKTIONEN -->
+<section class="block" id="features" style="background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow" data-i18n="feat_eyebrow">An Bord</div>
+      <h2 data-i18n="feat_h2">Was SextantFix mitbringt.</h2>
+    </div>
+    <div class="features">
+      <div class="feat">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 20 A17 17 0 0 1 20 3"/><path d="M3 20 L11 8 L20 20 Z" stroke-linejoin="round"/><circle cx="11" cy="8" r="1.4" fill="currentColor" stroke="none"/></svg>
+        <h3 data-i18n="f1_h">Tagbogenverfahren</h3>
+        <p data-i18n="f1_p">Das von Ralf Lampalzer entwickelte Verfahren, direkt integriert — dazu die klassische St.-Hilaire-Methode.</p>
+      </div>
+      <div class="feat">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3 A9 9 0 0 1 12 21"/><path d="M3 12 H21"/></svg>
+        <h3 data-i18n="f2_h">Echte Astronomie</h3>
+        <p data-i18n="f2_p">Präzise Ephemeriden über Skyfield: Stundenwinkel, Deklination, Refraktion und Präzession korrekt berechnet.</p>
+      </div>
+      <div class="feat">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7 L9 4 L15 7 L20 4 V17 L15 20 L9 17 L4 20 Z" stroke-linejoin="round"/><path d="M9 4 V17 M15 7 V20"/></svg>
+        <h3 data-i18n="f3_h">Offline-Karten</h3>
+        <p data-i18n="f3_p">Küstenlinien und Kartenkacheln lokal gespeichert — volle Funktion auch ohne Internet auf See.</p>
+      </div>
+      <div class="feat">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 15 Q7 11 11 15 T19 15"/><path d="M3 19 Q7 15 11 19 T19 19"/><circle cx="18" cy="6" r="3"/></svg>
+        <h3 data-i18n="f4_h">GRIB-Wetter</h3>
+        <p data-i18n="f4_p">Wetterdaten laden und über der Karte darstellen — Wind und mehr, mit Zeitschieber.</p>
+      </div>
+      <div class="feat">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 L4 6 V13 C4 18 12 22 12 22 C12 22 20 18 20 13 V6 Z"/></svg>
+        <h3 data-i18n="f5_h">Marken &amp; Routen</h3>
+        <p data-i18n="f5_p">Standlinien und Marken setzen, als CSV exportieren und GPX-Routen einlesen.</p>
+      </div>
+      <div class="feat">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M2 12 H22 M12 2 A15 15 0 0 1 12 22 A15 15 0 0 1 12 2"/></svg>
+        <h3 data-i18n="f6_h">Dreisprachig</h3>
+        <p data-i18n="f6_p">Vollständig auf Deutsch, Englisch und Französisch — Oberfläche und Meldungen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOT-GALERIE -->
+<section class="block" id="gallery">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow" data-i18n="gal_eyebrow">Ansichten</div>
+      <h2 data-i18n="gal_h2">Ein Blick ins Programm.</h2>
+      <p data-i18n="gal_p">Screenshots folgen — hier entsteht eine Übersicht der wichtigsten Ansichten.</p>
+    </div>
+    <div class="gallery">
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/standlinien-fix.jpg" alt="Standlinien und Fix">
+        </div>
+        <div class="cap"><h4 data-i18n="g1_h">Standlinien &amp; Fix</h4><p data-i18n="g1_p">Beobachtungen als Standlinien auf der Seekarte, mit Schnittpunkt.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/tagbogenkurve.jpg" alt="Tagbogenkurve">
+        </div>
+        <div class="cap"><h4 data-i18n="g2_h">dazugehörige Tagbogenkurve</h4><p data-i18n="g2_p">Der Tagesbogen der Sonne, berechnet aus den Messungen — Basis des Tagbogenverfahrens.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/terrestrische-navigation.png" alt="Terrestrische Navigation und Versegelungspeilung">
+        </div>
+        <div class="cap"><h4 data-i18n="g3_h">Terrestrische Navigation &amp; Versegelung</h4><p data-i18n="g3_p">Peilungen zu Landmarken und Leuchttürmen — inklusive Versegelungspeilung für die klassische Standortbestimmung unterwegs.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/offline-seekarte.jpg" alt="Offline-Seekarte">
+        </div>
+        <div class="cap"><h4 data-i18n="g4_h">Offline-Seekarte</h4><p data-i18n="g4_p">Küstenlinien und Kacheln, gespeichert für den Einsatz ohne Netz.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/grib-wetter.jpg" alt="GRIB-Wetter">
+        </div>
+        <div class="cap"><h4 data-i18n="g5_h">GRIB-Wetter</h4><p data-i18n="g5_p">Windfelder über der Karte, mit Zeitschieber.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/meteorologie.png" alt="Meteorologische Bodenwetterkarten mit Bootsposition">
+        </div>
+        <div class="cap"><h4 data-i18n="g7_h">Meteorologische Karten</h4><p data-i18n="g7_p">Analysierte Bodenwetterkarten (DWD, NOAA) mit Bootsposition — inklusive Windmessung aus Isobaren-Abstand nach David Burch.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/leuchtfeuer.gif" alt="Leuchtfeuer-Datenbank weltweit">
+        </div>
+        <div class="cap"><h4 data-i18n="g8_h">Leuchtfeuer weltweit</h4><p data-i18n="g8_p">Direkter Sprung zur Leuchtfeuer-Datenbank von Frank Schmirler, mit aktueller Position und Zoomstufe.</p></div>
+      </div>
+      <div class="gcard">
+        <div class="frame">
+          <img src="screenshots/integration-uebersicht.png" alt="Anbindung an qtVlm, Windy, Wetterkarten, Stellarium, Google Earth und Leuchtfeuer">
+        </div>
+        <div class="cap"><h4 data-i18n="g6_h">Nahtlose Zusammenarbeit mit qtVlm, Windy, Wetterkarten, Stellarium, Google Earth und Leuchtfeuer-Datenbank</h4></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="download" id="download">
+  <div class="wrap">
+    <h2 data-i18n="dl_h">Jetzt ausprobieren.</h2>
+    <p data-i18n="dl_p">SextantFix ist kostenlos. Lade den Installer für Windows — die Installation erledigt den Rest.</p>
+    <a href="https://github.com/HeinBloed32/SextantFix/releases/latest/download/SextantFix_Installer.exe" class="btn btn-primary" data-i18n="dl_btn">Für Windows herunterladen</a>
+    <a href="tutorials.html" class="btn btn-ghost" data-i18n="dl_tutorials" style="margin-left:14px;">Tutorials ansehen</a>
+    <div class="os-note" data-i18n="dl_note">Windows 10 / 11</div>
+    <div class="dl-disclaimer"><strong data-i18n="dl_disc_label">Hinweis:</strong> <span data-i18n="dl_disclaimer">SextantFix ist ein Lern- und Trainingswerkzeug für astronomische und terrestrische Navigation. Es ist nicht als Navigationsmittel für den Seebetrieb zugelassen und enthält keine amtlichen, aktuellen Seekarten. Für die tatsächliche Navigation an Bord sind ausschließlich zugelassene Navigationsausrüstung und amtliche Seekarten zu verwenden.</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 40 40" fill="none" style="width:26px;height:26px;">
+        <path d="M6 32 A26 26 0 0 1 32 6" stroke="var(--brass)" stroke-width="2.5" fill="none"/>
+        <path d="M6 32 L20 12 L32 32 Z" stroke="var(--cyan)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      </svg>
+      <b>Sextant<span style="color:var(--cyan)">Fix</span></b>
+    </div>
+    <div class="foot-links">
+      <a href="https://github.com/HeinBloed32/SextantFix" data-i18n="foot_gh">GitHub</a>
+      <a href="#how" data-i18n="foot_how">Verfahren</a>
+      <a href="tutorials.html" data-i18n="foot_tutorials">Tutorials</a>
+      <a href="#download" data-i18n="foot_dl">Download</a>
+    </div>
+    <div class="foot-copy">© 2026 SextantFix</div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX (Klick auf Screenshot zeigt volles Bild) -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-hint" data-i18n="lb_hint">Klicken zum Schließen</div>
+</div>
+
+<script>
+const I18N={
+  de:{
+    nav_how:"Verfahren",nav_features:"Funktionen",nav_gallery:"Ansichten",nav_tutorials:"Tutorials",nav_download:"Download",
+    hero_eyebrow:"Astronomische Navigation",
+    hero_h1a:"Astronavigation",hero_h1b:"leicht gemacht.",
+    hero_lead:"Bestimme deinen Standort aus der Beobachtung von Sonne, Planeten und Sternen — ganz ohne GPS. SextantFix übernimmt die Rechenarbeit hinter dem Tagbogenverfahren und der St.-Hilaire-Methode.",
+    hero_cta1:"Herunterladen",hero_cta2:"So funktioniert es",
+    flag1:"Läuft offline",flag2:"Dreisprachig DE/EN/FR",flag3:"Kostenlos",
+    how_eyebrow:"Vom Gestirn zur Position",how_h2:"Wie eine Beobachtung zum Standort wird.",
+    how_p:"Das Prinzip der Astronavigation ist Jahrhunderte alt. SextantFix nimmt dir nur die mühsame Handrechnung ab — den Rest machst du selbst.",
+    s1_h:"Gestirn messen",s1_p:"Miss die Höhe eines Sterns, der Sonne oder eines Planeten mit dem Sextanten — oder im Simulator.",
+    s2_h:"Standlinie berechnen",s2_p:"SextantFix reduziert die Beobachtung per Tagbogenverfahren oder St.-Hilaire-Methode zu einer Standlinie auf der Karte.",
+    s3_h:"Position im Schnittpunkt",s3_p:"Zwei oder mehr Standlinien schneiden sich. Der Schnittpunkt ist dein Schiffsort — bestimmt allein aus dem Himmel.",
+    feat_eyebrow:"An Bord",feat_h2:"Was SextantFix mitbringt.",
+    f1_h:"Tagbogenverfahren",f1_p:"Das von Ralf Lampalzer entwickelte Verfahren, direkt integriert — dazu die klassische St.-Hilaire-Methode.",
+    f2_h:"Echte Astronomie",f2_p:"Präzise Ephemeriden über Skyfield: Stundenwinkel, Deklination, Refraktion und Präzession korrekt berechnet.",
+    f3_h:"Offline-Karten",f3_p:"Küstenlinien und Kartenkacheln lokal gespeichert — volle Funktion auch ohne Internet auf See.",
+    f4_h:"GRIB-Wetter",f4_p:"Wetterdaten laden und über der Karte darstellen — Wind und mehr, mit Zeitschieber.",
+    f5_h:"Marken & Routen",f5_p:"Standlinien und Marken setzen, als CSV exportieren und GPX-Routen einlesen.",
+    f6_h:"Dreisprachig",f6_p:"Vollständig auf Deutsch, Englisch und Französisch — Oberfläche und Meldungen.",
+    gal_eyebrow:"Ansichten",gal_h2:"Ein Blick ins Programm.",gal_p:"Screenshots aus dem laufenden Betrieb — die wichtigsten Ansichten von SextantFix.",
+    g1_h:"Standlinien & Fix",g1_p:"Beobachtungen als Standlinien auf der Seekarte, mit Schnittpunkt.",
+    g2_h:"dazugehörige Tagbogenkurve",g2_p:"Der Tagesbogen der Sonne, berechnet aus den Messungen — Basis des Tagbogenverfahrens.",
+    g3_h:"Terrestrische Navigation & Versegelung",g3_p:"Peilungen zu Landmarken und Leuchttürmen — inklusive Versegelungspeilung für die klassische Standortbestimmung unterwegs.",
+    g4_h:"Offline-Seekarte",g4_p:"Küstenlinien und Kacheln, gespeichert für den Einsatz ohne Netz.",
+    g5_h:"GRIB-Wetter",g5_p:"Windfelder über der Karte, mit Zeitschieber.",
+    g6_h:"Nahtlose Zusammenarbeit mit qtVlm, Windy, Wetterkarten, Stellarium, Google Earth und Leuchtfeuer-Datenbank",
+    g7_h:"Meteorologische Karten",g7_p:"Analysierte Bodenwetterkarten (DWD, NOAA) mit Bootsposition — inklusive Windmessung aus Isobaren-Abstand nach David Burch.",
+    g8_h:"Leuchtfeuer weltweit",g8_p:"Direkter Sprung zur Leuchtfeuer-Datenbank von Frank Schmirler, mit aktueller Position und Zoomstufe.",
+    dl_h:"Jetzt ausprobieren.",dl_p:"SextantFix ist kostenlos. Lade den Installer für Windows — die Installation erledigt den Rest.",
+    dl_btn:"Für Windows herunterladen",dl_tutorials:"Tutorials ansehen",dl_note:"Windows 10 / 11",
+    dl_disc_label:"Hinweis:",
+    dl_disclaimer:"SextantFix ist ein Lern- und Trainingswerkzeug für astronomische und terrestrische Navigation. Es ist nicht als Navigationsmittel für den Seebetrieb zugelassen und enthält keine amtlichen, aktuellen Seekarten. Für die tatsächliche Navigation an Bord sind ausschließlich zugelassene Navigationsausrüstung und amtliche Seekarten zu verwenden.",
+    foot_gh:"GitHub",foot_how:"Verfahren",foot_tutorials:"Tutorials",foot_dl:"Download",
+    lb_hint:"Klicken zum Schließen"
+  },
+  en:{
+    nav_how:"Method",nav_features:"Features",nav_gallery:"Views",nav_tutorials:"Tutorials",nav_download:"Download",
+    hero_eyebrow:"Celestial navigation",
+    hero_h1a:"Celestial navigation",hero_h1b:"made simple.",
+    hero_lead:"Determine your position by observing the sun, planets and stars — without GPS. SextantFix handles the computation behind the Tagbogen method and St. Hilaire intercept.",
+    hero_cta1:"Download",hero_cta2:"How it works",
+    flag1:"Works offline",flag2:"Trilingual DE/EN/FR",flag3:"Free",
+    how_eyebrow:"From star to position",how_h2:"How an observation becomes a position.",
+    how_p:"The principle of celestial navigation is centuries old. SextantFix only takes the tedious hand-calculation off your plate — the rest is up to you.",
+    s1_h:"Measure a body",s1_p:"Take the altitude of a star, the sun or a planet with the sextant — or in the simulator.",
+    s2_h:"Reduce to a line",s2_p:"SextantFix reduces the sight via the Tagbogen or St. Hilaire method to a line of position on the chart.",
+    s3_h:"Position at the crossing",s3_p:"Two or more lines of position cross. The intersection is your position — determined from the sky alone.",
+    feat_eyebrow:"On board",feat_h2:"What SextantFix brings.",
+    f1_h:"Tagbogen method",f1_p:"The method developed by Ralf Lampalzer, built right in — plus the classic St. Hilaire intercept.",
+    f2_h:"Real astronomy",f2_p:"Precise ephemerides via Skyfield: hour angle, declination, refraction and precession computed correctly.",
+    f3_h:"Offline charts",f3_p:"Coastlines and map tiles stored locally — full function even without internet at sea.",
+    f4_h:"GRIB weather",f4_p:"Load weather data and render it over the chart — wind and more, with a time slider.",
+    f5_h:"Marks & routes",f5_p:"Set lines of position and marks, export as CSV and import GPX routes.",
+    f6_h:"Trilingual",f6_p:"Fully in German, English and French — interface and messages.",
+    gal_eyebrow:"Views",gal_h2:"A look inside.",gal_p:"Screenshots from actual use — the main views of SextantFix.",
+    g1_h:"Lines of position & fix",g1_p:"Observations as lines of position on the chart, with intersection.",
+    g2_h:"Corresponding diurnal arc",g2_p:"The sun's daily arc, computed from your sights — the basis of the Tagbogen method.",
+    g3_h:"Terrestrial Navigation & Running Fix",g3_p:"Bearings to landmarks and lighthouses — including running fix for classic underway positioning.",
+    g4_h:"Offline chart",g4_p:"Coastlines and tiles, stored for use without a network.",
+    g5_h:"GRIB weather",g5_p:"Wind fields over the chart, with a time slider.",
+    g6_h:"Seamless collaboration with qtVlm, Windy, weather charts, Stellarium, Google Earth and lighthouse database",
+    g7_h:"Weather Charts",g7_p:"Analysed surface weather charts (DWD, NOAA) with boat position — including wind speed from isobar spacing per David Burch.",
+    g8_h:"Lighthouses Worldwide",g8_p:"Direct link to Frank Schmirler's lighthouse database, with current position and zoom level.",
+    dl_h:"Try it now.",dl_p:"SextantFix is free. Download the Windows installer — the setup does the rest.",
+    dl_btn:"Download for Windows",dl_tutorials:"Watch tutorials",dl_note:"Windows 10 / 11",
+    dl_disc_label:"Note:",
+    dl_disclaimer:"SextantFix is a learning and training tool for astronomical and terrestrial navigation. It is not approved as a means of navigation for actual sea operations and does not include official, up-to-date nautical charts. Real navigation on board must rely exclusively on approved navigation equipment and official charts.",
+    foot_gh:"GitHub",foot_how:"Method",foot_tutorials:"Tutorials",foot_dl:"Download",
+    lb_hint:"Click to close"
+  },
+  fr:{
+    nav_how:"Méthode",nav_features:"Fonctions",nav_gallery:"Vues",nav_tutorials:"Tutoriels",nav_download:"Télécharger",
+    hero_eyebrow:"Navigation astronomique",
+    hero_h1a:"La navigation astronomique",hero_h1b:"simplifiée.",
+    hero_lead:"Déterminez votre position en observant le soleil, les planètes et les étoiles — sans GPS. SextantFix se charge des calculs de la méthode Tagbogen et de la droite de hauteur de St. Hilaire.",
+    hero_cta1:"Télécharger",hero_cta2:"Comment ça marche",
+    flag1:"Fonctionne hors ligne",flag2:"Trilingue DE/EN/FR",flag3:"Gratuit",
+    how_eyebrow:"De l'astre à la position",how_h2:"Comment une observation devient une position.",
+    how_p:"Le principe de la navigation astronomique est vieux de plusieurs siècles. SextantFix vous épargne seulement le calcul manuel fastidieux — le reste vous appartient.",
+    s1_h:"Mesurer un astre",s1_p:"Relevez la hauteur d'une étoile, du soleil ou d'une planète au sextant — ou dans le simulateur.",
+    s2_h:"Réduire en droite",s2_p:"SextantFix réduit l'observation par la méthode Tagbogen ou St. Hilaire en une droite de hauteur sur la carte.",
+    s3_h:"Position à l'intersection",s3_p:"Deux droites ou plus se croisent. L'intersection est votre position — déterminée à partir du ciel seul.",
+    feat_eyebrow:"À bord",feat_h2:"Ce que SextantFix apporte.",
+    f1_h:"Méthode Tagbogen",f1_p:"La méthode développée par Ralf Lampalzer, intégrée — avec la droite de hauteur classique de St. Hilaire.",
+    f2_h:"Vraie astronomie",f2_p:"Éphémérides précises via Skyfield : angle horaire, déclinaison, réfraction et précession calculés correctement.",
+    f3_h:"Cartes hors ligne",f3_p:"Traits de côte et tuiles stockés localement — pleine fonction même sans internet en mer.",
+    f4_h:"Météo GRIB",f4_p:"Chargez les données météo et affichez-les sur la carte — vent et plus, avec curseur temporel.",
+    f5_h:"Amers & routes",f5_p:"Placez droites et amers, exportez en CSV et importez des routes GPX.",
+    f6_h:"Trilingue",f6_p:"Entièrement en allemand, anglais et français — interface et messages.",
+    gal_eyebrow:"Vues",gal_h2:"Un aperçu du programme.",gal_p:"Captures d'écran en conditions réelles — les principales vues de SextantFix.",
+    g1_h:"Droites & point",g1_p:"Observations en droites de hauteur sur la carte, avec intersection.",
+    g2_h:"Courbe du Tagbogen correspondante",g2_p:"L'arc diurne du soleil, calculé à partir des observations — base de la méthode Tagbogen.",
+    g3_h:"Navigation terrestre & point courant",g3_p:"Relèvements vers des amers et phares — avec point courant (recoupement) pour la navigation classique en mer.",
+    g4_h:"Carte hors ligne",g4_p:"Traits de côte et tuiles, stockés pour un usage sans réseau.",
+    g5_h:"Météo GRIB",g5_p:"Champs de vent sur la carte, avec curseur temporel.",
+    g6_h:"Collaboration transparente avec qtVlm, Windy, cartes météo, Stellarium, Google Earth et base de données des phares",
+    g7_h:"Cartes météorologiques",g7_p:"Cartes d'analyse au sol (DWD, NOAA) avec la position du bateau — avec mesure du vent selon l'écart isobare (méthode David Burch).",
+    g8_h:"Phares du monde entier",g8_p:"Lien direct vers la base de données des phares de Frank Schmirler, avec la position et le niveau de zoom actuels.",
+    dl_h:"Essayez maintenant.",dl_p:"SextantFix est gratuit. Téléchargez l'installateur Windows — l'installation fait le reste.",
+    dl_btn:"Télécharger pour Windows",dl_tutorials:"Voir les tutoriels",dl_note:"Windows 10 / 11",
+    dl_disc_label:"Remarque :",
+    dl_disclaimer:"SextantFix est un outil d'apprentissage et d'entraînement pour la navigation astronomique et terrestre. Il n'est pas homologué comme moyen de navigation en mer et ne contient pas de cartes marines officielles à jour. Pour la navigation réelle à bord, seuls des équipements de navigation homologués et des cartes marines officielles doivent être utilisés.",
+    foot_gh:"GitHub",foot_how:"Méthode",foot_tutorials:"Tutoriels",foot_dl:"Télécharger",
+    lb_hint:"Cliquez pour fermer"
+  }
+};
+function setLang(lang){
+  const d=I18N[lang]||I18N.de;
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(d[k]!==undefined) el.textContent=d[k];
+  });
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-lang')===lang));
+}
+document.querySelectorAll('.lang button').forEach(btn=>btn.addEventListener('click',()=>setLang(btn.getAttribute('data-lang'))));
+const nl=(navigator.language||'de').slice(0,2);
+setLang(['de','en','fr'].includes(nl)?nl:'de');
+
+// Lightbox: Klick auf Screenshot zeigt das volle, unbeschnittene Bild
+const lightbox=document.getElementById('lightbox');
+const lbImg=document.getElementById('lbImg');
+const lbClose=document.getElementById('lbClose');
+function openLightbox(src, alt){
+  lbImg.src=src;
+  lbImg.alt=alt||'';
+  lightbox.classList.add('on');
+}
+function closeLightbox(){
+  lightbox.classList.remove('on');
+  lbImg.src='';
+}
+document.querySelectorAll('.gcard .frame img').forEach(img=>{
+  img.addEventListener('click', ()=>openLightbox(img.src, img.alt));
+});
+lightbox.addEventListener('click', closeLightbox);
+lbClose.addEventListener('click', (e)=>{ e.stopPropagation(); closeLightbox(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
+</script>
+</body>
+</html>
