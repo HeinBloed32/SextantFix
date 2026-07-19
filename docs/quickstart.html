@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SextantFix — Kurzanleitung im Detail</title>
+<style>
+  :root{
+    --bg:        #0a1420;
+    --bg-soft:   #0f1c2b;
+    --panel:     #13263a;
+    --ink:       #e6eef5;
+    --ink-dim:   #8ba3ba;
+    --cyan:      #38d5e0;
+    --cyan-deep: #1b9aa8;
+    --brass:     #c9a86a;
+    --line:      #22394f;
+    --maxw:      980px;
+    --mono: "SF Mono","JetBrains Mono","Fira Code",ui-monospace,"Cascadia Code",Consolas,monospace;
+    --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+
+  header{ position:sticky; top:0; z-index:50; background:rgba(10,20,32,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:64px; max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+  .brand{ display:flex; align-items:center; gap:11px; font-family:var(--mono); font-weight:600; letter-spacing:.5px; }
+  .brand .logo{ width:30px; height:30px; flex:none; }
+  .brand b{ color:var(--ink); font-size:1.05rem; }
+  .brand b span{ color:var(--cyan); }
+  .backlink{ font-family:var(--mono); font-size:.8rem; color:var(--ink-dim); letter-spacing:.5px; display:flex; align-items:center; gap:8px; }
+  .backlink:hover{ color:var(--cyan); }
+  .lang{ display:flex; gap:2px; font-family:var(--mono); font-size:.78rem; }
+  .lang button{ background:none; border:1px solid var(--line); color:var(--ink-dim); padding:5px 9px; cursor:pointer; letter-spacing:.5px; transition:all .2s; }
+  .lang button:first-child{ border-radius:5px 0 0 5px; }
+  .lang button:last-child{ border-radius:0 5px 5px 0; }
+  .lang button:not(:first-child){ border-left:none; }
+  .lang button.on{ background:var(--cyan); color:var(--bg); border-color:var(--cyan); font-weight:600; }
+
+  .pagehead{ padding:56px 0 40px; }
+  .eyebrow{ font-family:var(--mono); font-size:.78rem; letter-spacing:2px; color:var(--cyan); text-transform:uppercase; margin-bottom:16px; }
+  .pagehead h1{ font-size:clamp(1.9rem,4.2vw,2.7rem); letter-spacing:-.8px; font-weight:800; margin-bottom:16px; }
+  .pagehead p{ color:var(--ink-dim); max-width:38em; font-size:1.02rem; }
+
+  /* ---------- Akkordeon ---------- */
+  .accordion{ padding-bottom:80px; }
+  .acc-item{ border:1px solid var(--line); border-radius:12px; margin-bottom:14px; overflow:hidden; background:var(--panel); scroll-margin-top:80px; }
+  .acc-head{ display:flex; align-items:center; gap:16px; padding:20px 24px; cursor:pointer; user-select:none; transition:background .2s; }
+  .acc-head:hover{ background:rgba(56,213,224,.05); }
+  .acc-n{ font-family:var(--mono); color:var(--brass); font-size:1rem; font-weight:700; flex:none; width:30px; }
+  .acc-title{ flex:1; font-size:1.05rem; font-weight:600; letter-spacing:-.1px; }
+  .acc-chevron{ font-family:var(--mono); color:var(--ink-dim); transition:transform .25s; flex:none; }
+  .acc-item.open .acc-chevron{ transform:rotate(180deg); color:var(--cyan); }
+  .acc-body{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .acc-item.open .acc-body{ max-height:20000px; }
+  .acc-inner{ padding:0 24px 26px; border-top:1px solid var(--line); }
+  .acc-inner p{ color:var(--ink-dim); margin:16px 0 10px; font-size:.96rem; }
+  .acc-inner p strong{ color:var(--ink); }
+  .acc-inner code{ font-family:var(--mono); background:rgba(56,213,224,.1); color:var(--cyan); padding:1px 6px; border-radius:4px; font-size:.88em; }
+  .acc-inner ul{ color:var(--ink-dim); margin:10px 0 10px 20px; font-size:.96rem; }
+  .acc-inner li{ margin-bottom:6px; }
+  .shot{
+    margin:16px 0; border:1px solid var(--line); border-radius:10px; overflow:hidden;
+    background:var(--bg); aspect-ratio:16/9; display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .shot img{ width:100%; height:100%; object-fit:contain; display:block; }
+  .shot .placeholder{ font-family:var(--mono); font-size:.78rem; color:var(--ink-dim); text-align:center; padding:20px; }
+  .shot .cap{ position:absolute; bottom:0; left:0; right:0; background:rgba(10,20,32,.75); font-family:var(--mono); font-size:.72rem; color:var(--ink-dim); padding:6px 10px; }
+  .note{ background:rgba(201,168,106,.08); border:1px solid rgba(201,168,106,.35); border-radius:8px; padding:12px 16px; font-size:.9rem; color:var(--ink-dim); margin:14px 0; }
+  .note strong{ color:var(--brass); }
+
+  /* ---------- Übersichts-Zonen ---------- */
+  .zones{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0; }
+  .shot-row{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:16px 0; }
+  .shot-row .shot{ margin:0; }
+  .zone{ background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:14px 16px; }
+  .zone .zn{ font-family:var(--mono); color:var(--cyan); font-size:.78rem; margin-bottom:4px; }
+  .zone p{ margin:0; font-size:.9rem; }
+
+  footer{ padding:40px 0; border-top:1px solid var(--line); }
+  .foot-copy{ font-family:var(--mono); font-size:.74rem; color:var(--ink-dim); letter-spacing:.5px; text-align:center; }
+
+  @media(max-width:700px){ .zones{ grid-template-columns:1fr; } .shot-row{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="brand">
+      <svg class="logo" viewBox="0 0 40 40" fill="none">
+        <path d="M6 32 A26 26 0 0 1 32 6" stroke="var(--brass)" stroke-width="2.5" fill="none"/>
+        <path d="M6 32 L20 12 L32 32 Z" stroke="var(--cyan)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <circle cx="20" cy="12" r="2.2" fill="var(--cyan)"/>
+        <circle cx="27" cy="9" r="1.4" fill="var(--brass)"/>
+      </svg>
+      <b>Sextant<span>Fix</span></b>
+    </a>
+    <a href="tutorials.html" class="backlink">← <span data-i18n="back">Zurück zu Tutorials</span></a>
+    <div class="lang">
+      <button data-lang="de" class="on">DE</button>
+      <button data-lang="en">EN</button>
+      <button data-lang="fr">FR</button>
+    </div>
+  </div>
+</header>
+
+<section class="pagehead">
+  <div class="wrap">
+    <div class="eyebrow" data-i18n="ph_eyebrow">Kurzanleitung im Detail</div>
+    <h1 data-i18n="ph_h1">Jede Position, Schritt für Schritt.</h1>
+    <p data-i18n="ph_p">Auf einen Punkt klicken, um ihn aufzuklappen — mit Beispielbildern und Erklärungen.</p>
+  </div>
+</section>
+
+<section class="accordion">
+  <div class="wrap">
+
+    <!-- ÜBERSICHT -->
+    <!-- 01 -->
+    <div class="acc-item" id="step1">
+      <div class="acc-head" onclick="toggleAcc('step1')">
+        <div class="acc-n">01</div>
+        <div class="acc-title" data-i18n="s1_title">Installieren &amp; starten</div>
+        <div class="acc-chevron">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+
+        <p data-i18n="s1_p0"><strong data-i18n="s1_p0_strong">Warum ein Windows-Warnfenster erscheinen kann:</strong> SextantFix ist kostenlose Software eines einzelnen Entwicklers, nicht mit einem teuren, kommerziellen Zertifikat signiert. Windows kennt den Herausgeber deshalb nicht und zeigt sicherheitshalber eine Warnung — das bedeutet nicht, dass etwas mit dem Programm nicht stimmt, nur dass es (noch) nicht weit genug verbreitet ist, um Windows bekannt zu sein. Ob die Warnung überhaupt erscheint, hängt von den Smart-App-Control-Einstellungen deines Systems ab.</p>
+
+        <div class="shot"><img src="screenshots/quickstart/install_01_smartscreen_warning.jpg" alt="Windows SmartScreen Warnfenster"></div>
+        <p data-i18n="s1_p1">Auf <code data-i18n="s1_link1">Weitere Informationen</code> klicken, um die Details und einen zweiten Button einzublenden.</p>
+
+        <div class="shot"><img src="screenshots/quickstart/install_02_smartscreen_details.jpg" alt="Windows SmartScreen Warnfenster mit Details und Trotzdem-ausführen-Button"></div>
+        <p data-i18n="s1_p2">Jetzt <code data-i18n="s1_link2">Trotzdem ausführen</code> wählen, um mit der Installation fortzufahren.</p>
+
+        <div class="shot"><img src="screenshots/quickstart/install_03_wizard_welcome.jpg" alt="Installationsassistent Willkommensbildschirm"></div>
+        <p data-i18n="s1_p3">Der Installationsassistent führt danach durch die eigentliche Installation.</p>
+
+        <div class="shot"><img src="screenshots/quickstart/install_04_wizard_directory.jpg" alt="Installationsassistent Zielverzeichnis auswählen"></div>
+        <p data-i18n="s1_p4">Das vorgeschlagene Zielverzeichnis passt für die meisten Nutzer — einfach auf <code data-i18n="s1_link3">Installieren</code> klicken.</p>
+
+        <div class="shot" style="aspect-ratio:16/10;"><img src="screenshots/quickstart/install_05_desktop_icon.jpg" alt="SextantFix-Verknüpfung auf dem Desktop" style="object-fit:contain;width:40%;height:40%;margin:auto;"></div>
+        <p data-i18n="s1_p5">Fertig — auf dem Desktop liegt jetzt eine Verknüpfung, die SextantFix startet.</p>
+
+        <p data-i18n="s1_p6"><strong data-i18n="s1_p6_strong">Kartendaten beim ersten Start:</strong> SextantFix lädt beim allerersten Start einmalig Küstenlinien-Daten im Hintergrund herunter, damit die Karte auch offline etwas anzuzeigen hat — ganz ohne Dialog oder Rückfrage, das läuft automatisch mit.</p>
+        <div class="note"><strong data-i18n="note_label">Hinweis:</strong> <span data-i18n="s1_note">Kein Internet beim ersten Start? Kein Problem — SextantFix funktioniert trotzdem, die Küstenlinien-Karte wird automatisch nachgeladen, sobald wieder eine Verbindung besteht.</span></div>
+      </div></div>
+    </div>
+
+    <div class="acc-item" id="overview">
+      <div class="acc-head" onclick="toggleAcc('overview')">
+        <div class="acc-n">—</div>
+        <div class="acc-title" data-i18n="ov_title">Die Programmoberfläche im Überblick</div>
+        <div class="acc-chevron">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <p data-i18n="ov_p">Bevor es losgeht: ein kurzer Rundgang, was wo liegt.</p>
+        <div class="shot">
+          <img src="screenshots/quickstart/overview.jpg" alt="SextantFix Programmoberfläche mit fünf beschrifteten Bereichen">
+        </div>
+        <div class="zones">
+          <div class="zone"><div class="zn" data-i18n="ov_z1_n">Links (rot)</div><p data-i18n="ov_z1_p">Sextantenmessung eintragen, Sonnen-Setup (Hemisphäre), Standlinien-Legende, Koppelnavigation.</p></div>
+          <div class="zone"><div class="zn" data-i18n="ov_z2_n">Oben (grün)</div><p data-i18n="ov_z2_p">Schnellzugriff-Knöpfe: Windy, Google Earth, Stellarium, Leuchtfeuer, SAS.Planet, Meteorologie — übergeben deine aktuelle Position direkt.</p></div>
+          <div class="zone"><div class="zn" data-i18n="ov_z3_n">Oben rechts (pink)</div><p data-i18n="ov_z3_p">„Anzeige &amp; Result"-Panel — Ergebnisse und weitere Zusatzinformationen (Fehlerbereich, Details, Kalibrierung).</p></div>
+          <div class="zone"><div class="zn" data-i18n="ov_z4_n">Mitte unten (gelb)</div><p data-i18n="ov_z4_p">Kartenstil wählen — Basiskarte und Overlays (Seezeichen, Route, Wassertiefen).</p></div>
+          <div class="zone"><div class="zn" data-i18n="ov_z5_n">Unten links (gelb)</div><p data-i18n="ov_z5_p">Strömung (Richtung / Stärke), Koordinaten an Mausposition, Missweisung an Bootsposition.</p></div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 02 -->
+    <div class="acc-item" id="step2">
+      <div class="acc-head" onclick="toggleAcc('step2')">
+        <div class="acc-n">02</div>
+        <div class="acc-title" data-i18n="s2_title">Position mit der Sonne bestimmen</div>
+        <div class="acc-chevron">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+
+        <p data-i18n="s2_p0">Beim ersten Programmstart und ausgeschaltetem GPS kann es sein, dass kein Boot auf der Karte erscheint.</p>
+        <div class="shot"><img src="screenshots/quickstart/sight_00_move_boat_here.jpg" alt="Rechtsklick-Kontextmenü mit Move boat here"></div>
+        <p data-i18n="s2_p0b">Um alle Funktionen des Programmes zu nutzen, sollte das Boot manuell über Rechtsklick auf die Karte in eine Schätzposition gebracht werden (<code data-i18n="s2_link0">Move boat here</code>).</p>
+        <div class="shot"><img src="screenshots/quickstart/sight_00_no_boat_gps_off.jpg" alt="Karte ohne Bootsposition bei ausgeschaltetem GPS"></div>
+        <div class="note"><strong data-i18n="note_label">Hinweis:</strong> <span data-i18n="s2_note0">Für die eigentliche Positionsbestimmung per Tagbogenverfahren oder St.-Hilaire-Methode braucht SextantFix keine Bootsposition — beide kommen ohne angenommene Position (AP) aus. Eine gesetzte Bootsposition sorgt aber dafür, dass andere Programmteile (z.&nbsp;B. Meteorologie, externe Werkzeuge) korrekt funktionieren.</span></div>
+
+        <p data-i18n="s2_p4"><strong data-i18n="s2_p4_strong">Ohne eigene Messungen anfangen:</strong> Über das ☁️-Symbol eine der 20 Beispiel-Messreihen laden (verschiedene Weltregionen) — praktisch zum Ausprobieren, ohne selbst zu peilen. Jede Reihe enthält 10 simulierte Sonnenmessungen über eine Stunde, mit einem Zufallsablesefehler von bis zu 2 Bogenminuten.</p>
+        <div class="shot"><img src="screenshots/quickstart/sight_05_sample_data_picker.jpg" alt="Auswahl der Beispiel-Messreihen über das Cloud-Symbol"></div>
+
+        <p data-i18n="s2_p5">Du musst dabei nicht alle 10 Messungen verwenden — einzelne Messungen lassen sich deaktivieren, um auszuprobieren, wie wenige tatsächlich für einen brauchbaren Fix reichen. Das folgende Beispiel nutzt nur 4 der 10 Messungen:</p>
+        <div class="shot"><img src="screenshots/quickstart/sight_06_sample_data_fix.jpg" alt="Berechneter Fix aus 4 von 10 Beispielmessungen, mit Detailaufschlüsselung"></div>
+
+        <p data-i18n="s2_p6">Standlinien und Tagbogenkurve erscheinen erst nach einem Klick auf „Berechnen" — nicht automatisch. Berechnen lässt sich schon ab einer einzigen Messung: SextantFix zeigt dann einen vollständigen Höhenkreis (Circle of Position) statt einer Standlinie — sinnvoll etwa in Kombination mit anderen Standlinien-Arten (Tiefenlinie, Peilung auf ein Objekt oder auch eine ältere Kurslinie).</p>
+        <div class="note"><strong data-i18n="note_label">Hinweis:</strong> <span data-i18n="s2_check_note">Schneiden sich die Standlinien nicht überzeugend, prüfe die eingegebene Hemisphäre (N/S) und die Blickrichtung zur Sonne — der Sonnen-Bildpunkt auf dem Globus hilft bei der Orientierung.</span></div>
+
+        <p data-i18n="s2_p1">Jetzt zur eigenen Messung: Beispielhaft wurden 3 Messungen mit einem Halbspiegelsextanten durchgeführt, der Unterrand der Sonne wurde auf den Horizont gesetzt. Die Bilder entstammen einem Simulationsprogramm (Sailaway III von Richard Knoll).</p>
+
+        <div class="shot"><img src="screenshots/quickstart/sight_01_sailaway_sextant_a.jpg" alt="Sextantenmessung im Sailaway-Simulator, Sonnenhöhe 25°24.4'"><div class="cap" data-i18n="s2_cap1">25°24,4' · 18:33:37 UTC</div></div>
+        <div class="shot"><img src="screenshots/quickstart/sight_02_sailaway_sextant_b.jpg" alt="Sextantenmessung im Sailaway-Simulator, Sonnenhöhe 40°57.3'"><div class="cap" data-i18n="s2_cap2">40°57,3' · 20:01:53 UTC</div></div>
+        <div class="shot"><img src="screenshots/quickstart/sight_03_sailaway_sextant_c.jpg" alt="Sextantenmessung im Sailaway-Simulator, Sonnenhöhe 51°26.6'"><div class="cap" data-i18n="s2_cap3">51°26,6' · 22:03:20 UTC</div></div>
+
+        <p data-i18n="s2_fields_intro">Jede Messung wird über das Panel „Sextant reading“ erfasst: Uhrzeit in UTC, der gemessene Himmelskörper (Sonne, Mond, Planeten oder Sterne), der Messrand (LL = Unterrand, UL = Oberrand, Zentrum), Grad/Bogenminuten der Höhe, Indexfehler (IE) und Augenhöhe. Ein Klick auf „Add measurement“ übernimmt die Werte in die Liste — hier bereits für alle 3 Messungen geschehen.</p>
+        <div class="shot" style="aspect-ratio:357/1001; max-width:380px; margin:16px auto;"><img src="screenshots/quickstart/sight_07_entry_panel.png" alt="Eingabepanel Sextant reading mit Messungsliste"></div>
+        <p data-i18n="s2_icons_intro">Über die Symbolleiste unter der Messungsliste lassen sich einzelne Messungen bearbeiten (✏️) oder löschen (🗑️) — der grüne Kreis links neben jeder Messung schaltet sie einzeln ein oder aus. Ganze Messreihen lassen sich als Datensatz speichern (💾) und wieder laden (📁), zusätzlich zu den Beispiel-Messreihen aus der Cloud (☁️). Das Besen-Symbol (🧹) löscht dagegen alle Messungen auf einen Schlag — unwiderruflich, falls sie nicht vorher gespeichert wurden.</p>
+
+        <p data-i18n="s2_outlier_intro">SextantFix erkennt auffällige Messungen automatisch und geht flexibel mit ihnen um:</p>
+        <div class="shot" style="aspect-ratio:16/10;"><img src="screenshots/quickstart/sight_09_outlier_result.png" alt="Karte und Result-Panel mit Ausreißer-Markierung, Calculation mode und Huber-Auswertung"></div>
+        <ul>
+          <li>🔴 <strong data-i18n="s2_outlier_red_strong">Automatische Ausreißer-Erkennung:</strong> <span data-i18n="s2_outlier_red">SextantFix markiert auffällige Messungen automatisch in zwei Stufen: „sus" (verdächtig) ab einer Abweichung von 2,5σ vom Median, „out" (deutlicher Ausreißer) ab 3,5σ — berechnet über eine robuste Streuung (mittlere Absolutabweichung vom Median), nicht über den RMS-Wert. Hier betrifft das Messung 2 (40°57,3'), markiert als „out".</span></li>
+          <li>🟢 <strong data-i18n="s2_outlier_green_strong">Umgang mit Ausreißern wählen:</strong> <span data-i18n="s2_outlier_green">Unter „Calculation mode" legst du fest, ob der Fix im Standardverfahren berechnet wird oder Ausreißer berücksichtigt werden — entweder ganz ausgeschlossen oder mit „Robust (Huber)" nur schwächer gewichtet (Faktor k, hier 1,5).</span></li>
+          <li>🟡 <strong data-i18n="s2_outlier_yellow_strong">Ergebnisvergleich:</strong> <span data-i18n="s2_outlier_yellow">Das Panel zeigt den Fix nach Tagbogenverfahren (blauer Punkt) neben der klassischen St.-Hilaire-Lösung aus erster und letzter Messung (oranger Punkt) — optional mit einem einblendbaren Fehlerbereich um die Position.</span></li>
+          <li>🔵 <strong data-i18n="s2_outlier_blue_strong">Huber-Auswertung im Detail:</strong> <span data-i18n="s2_outlier_blue">Hier zeigt SextantFix die Auswirkung der Gewichtung — die Standardabweichung sinkt von 2,0' auf 1,3', Messung 2 wurde mit Faktor 0,28 heruntergewichtet statt verworfen.</span></li>
+        </ul>
+
+        <p data-i18n="s2_diurnal_intro">Das Verfahren nach Ralf Lampalzer berechnet den Fix nicht wie klassische Methoden als Schnittpunkt von Standlinien, sondern als beste Näherung der ortsspezifischen „Sonnenspur" am Himmel — und umgeht damit das Problem schleifender Schnittwinkel. Dadurch ist eine zuverlässige Positionsbestimmung bereits innerhalb einer Stunde möglich, allerdings meist mit mehreren Messungen. Die Lage der Messpunkte zur Kurve macht grobe Ausreißer schon optisch erkennbar; eine genauere Qualitätsbeurteilung liefert der RMS-Wert.</p>
+        <div class="shot"><img src="screenshots/quickstart/sight_08_diurnal_arc.png" alt="Tagbogenkurve mit den drei Messpunkten"><div class="cap" data-i18n="s2_diurnal_cap">RMS: 1,3'</div></div>
+      </div></div>
+    </div>
+
+    <!-- 03 -->
+    <div class="acc-item" id="step3">
+      <div class="acc-head" onclick="toggleAcc('step3')">
+        <div class="acc-n">03</div>
+        <div class="acc-title" data-i18n="s3_title">Terrestrische Peilungen</div>
+        <div class="acc-chevron">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <p data-i18n="s3_p1">Rechtsklick auf die Karte öffnet das Kontextmenü — darüber lassen sich Peilungen zu Landmarken oder Leuchttürmen setzen. SextantFix bietet zwei Verfahren zur Standortbestimmung über terrestrische Peilungen:</p>
+
+        <p data-i18n="s3_two_title"><strong>Kreuzpeilung — Standort aus zwei Peillinien</strong></p>
+        <p data-i18n="s3_two_p">Peilobjekt anklicken, dann Richtung und Länge der Peillinie festlegen — beides wird interaktiv auf der Karte angezeigt. Für die zweite Peillinie wiederholen. Der Standort wird automatisch aus dem Schnittpunkt berechnet.</p>
+        <div class="shot"><img src="screenshots/quickstart/bearing_01_two_bearings_fix.png" alt="Standort aus zwei Peillinien, Schnittpunkt als Ob-Position"></div>
+
+        <p data-i18n="s3_run_title"><strong>Versegelung — Standort aus zeitversetzten Peilungen</strong></p>
+        <p data-i18n="s3_run_p">Zwei Peilungen auf dasselbe Objekt setzen, mit ausreichendem Winkel dazwischen. Anschließend Kartenkurs (rechtweisend oder Kompass) und die zurückgelegte Strecke eingeben — die erste Peillinie wird entsprechend verschoben, der Standort automatisch berechnet.</p>
+        <div class="shot" style="aspect-ratio:632/603; max-width:420px; margin:16px auto;"><img src="screenshots/quickstart/bearing_02_running_fix_dialog.png" alt="Eingabedialog Versegelung: Kurs und Strecke"></div>
+        <div class="shot"><img src="screenshots/quickstart/bearing_03_running_fix_result.png" alt="Ergebnis der Versegelung mit verschobener Peillinie und Standort"></div>
+      </div></div>
+    </div>
+
+    <!-- 04 -->
+    <div class="acc-item" id="step4">
+      <div class="acc-head" onclick="toggleAcc('step4')">
+        <div class="acc-n">04</div>
+        <div class="acc-title" data-i18n="s4_title">qtVlm &amp; SextantFix</div>
+        <div class="acc-chevron">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <p data-i18n="s4_intro">qtVlm spielt für SextantFix eine zentrale Rolle: Die App verzichtet bewusst auf ein eigenes, sehr aufwändiges Routen- und Wetterprogramm und verlässt sich stattdessen auf qtVlm — SextantFix übergibt dafür immer nur die aktuelle Position, den Rest erledigt qtVlm wie gewohnt.</p>
+
+        <p data-i18n="s4_workflow_intro"><strong>Vorgeschlagener Workflow in der Zusammenarbeit mit qtVlm:</strong></p>
+
+        <p data-i18n="s4_step1">1. Bestimmen Sie Ihre Position in SextantFix (siehe Punkt 2 und 3).</p>
+        <p data-i18n="s4_step2">2. Rechtsklick auf das Boot → <code>Copy Position</code>.</p>
+        <div class="shot"><img src="screenshots/quickstart/qtvlm_01_copy_position.png" alt="SextantFix: Rechtsklick-Kontextmenü am Boot mit Copy Position"></div>
+
+        <p data-i18n="s4_step3">3. Wechsel zu qtVlm → Rechtsklick → <code>Paste a mark</code> (Marke einfügen).</p>
+        <div class="shot"><img src="screenshots/quickstart/qtvlm_02_paste_mark.png" alt="qtVlm: Rechtsklick-Kontextmenü mit Paste a mark"></div>
+
+        <p data-i18n="s4_step4">4. Erledigen Sie alle üblichen Aufgaben in qtVlm — Wettergribs laden, Route planen, wie gewohnt.</p>
+        <div class="shot"><img src="screenshots/quickstart/qtvlm_03_route_planning.png" alt="qtVlm: geplante Route mit Wetterdaten"></div>
+
+        <p data-i18n="s4_step56">5. Route in qtVlm kopieren (Rechtsklick-Menü). 6. Route in SextantFix einfügen — per <code>Strg+V</code> oder über das Rechtsklick-Menü.</p>
+        <div class="shot"><img src="screenshots/quickstart/qtvlm_04_route_imported.png" alt="SextantFix: eingefügte Route mit Zeitsteuerung und errechneter Bootsposition"></div>
+
+        <p data-i18n="s4_step7">7. Optional: Über den Schalter „GRIB" lassen sich Gribfiles direkt aus qtVlm importieren oder eigene NOAA-Daten laden. Die Zeitleistenfunktion zeigt dazu die errechnete Bootsposition entlang der Route.</p>
+        <div class="shot"><img src="screenshots/quickstart/qtvlm_05_grib_import.png" alt="SextantFix: GFS-Wind-Dialog mit GRIB-Import-Schalter"></div>
+      </div></div>
+    </div>
+
+    <!-- 05 -->
+    <div class="acc-item" id="step5">
+      <div class="acc-head" onclick="toggleAcc('step5')">
+        <div class="acc-n">05</div>
+        <div class="acc-title" data-i18n="s5_title">Andere Werkzeuge anbinden</div>
+        <div class="acc-chevron">▾</div>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <p data-i18n="s5_intro">Die Knöpfe oben links öffnen sechs externe Werkzeuge — jeweils mit der aktuellen Bootsposition, soweit möglich.</p>
+
+        <p data-i18n="s5_windy_title"><strong>1. Windy</strong></p>
+        <p data-i18n="s5_windy_p">Überträgt automatisch die aktuelle Position. Eine aus qtVlm exportierte GPX-Route kann zusätzlich geladen werden.</p>
+        <div class="shot"><img src="screenshots/quickstart/tools_01_windy.png" alt="Windy.com mit geladener Route"></div>
+
+        <p data-i18n="s5_ge_title"><strong>2. Google Earth</strong></p>
+        <p data-i18n="s5_ge_p">Position wird automatisch übergeben, mit direktem Zoom auf die Position. Eine Route kann per Copy &amp; Paste übergeben werden.</p>
+        <div class="shot"><img src="screenshots/quickstart/tools_02_google_earth.png" alt="Google Earth mit übergebener Route und Bootsposition"></div>
+
+        <p data-i18n="s5_stel_title"><strong>3. Stellarium</strong></p>
+        <p data-i18n="s5_stel_p1">Beim ersten Aufruf ist einmalig der Pfad zur <code>stellarium.exe</code> einzugeben. Bei Nachtmessungen erleichtert Stellarium die Auswahl der Navigationssterne — die aktuelle Bootsposition wird übergeben, sodass der Nachthimmel den passenden Ausschnitt zeigt.</p>
+        <p data-i18n="s5_stel_p2">Dafür müssen in Stellarium einmalig zwei Erweiterungen aktiviert werden: Unter F2 (oder Seitenleiste) → Reiter „Erweiterungen" die Erweiterung „Fernbedienung" auswählen (nicht „Remote Sync") und „Beim Start laden" sowie den Server-Autostart aktivieren, danach Stellarium einmal neu starten. Für die Navigationssterne zusätzlich die Erweiterung „Navigationssterne" auswählen und ebenfalls „Beim Start laden" aktivieren.</p>
+        <div class="shot"><img src="screenshots/quickstart/tools_03_stellarium.png" alt="Stellarium mit angezeigten Navigationssternen über der Bootsposition"></div>
+
+        <p data-i18n="s5_lights_title"><strong>4. Leuchtfeuer online</strong></p>
+        <p data-i18n="s5_lights_p">Ein wirklich nettes Gadget von Frank Schmirler: Ähnlich wie qtVlm zeigt es Blinkfrequenz, -dauer und -farbe der Leuchtfeuer — sehr hilfreich beim Einüben der Lichterdifferenzierung bei Nacht.</p>
+        <div class="shot"><img src="screenshots/quickstart/tools_04_lights_online.png" alt="Leuchtfeuer-online mit simulierter Nachtansicht der Blinkfeuer"></div>
+
+        <p data-i18n="s5_sas_title"><strong>5. SAS.Planet</strong></p>
+        <p data-i18n="s5_sas_p">Pfadeingabe erforderlich, erlaubt diverse zusätzliche Karten und vieles mehr. Die Position wird in die Zwischenablage kopiert — in SAS.Planet über „Goto" → „Paste from clipboard" einfügen (ein einfaches Strg+V reicht in SAS.Planet nicht aus).</p>
+
+        <p data-i18n="s5_meteo_title"><strong>6. Meteorologie</strong></p>
+        <p data-i18n="s5_meteo_p1">Mehrere ständig aktualisierte Wetterkarten zeigen Hoch-/Tiefdruckgebiete und Frontenverläufe. Je nach Position des Bootes wird automatisch die passende Quelle gewählt.</p>
+        <div class="shot"><img src="screenshots/quickstart/tools_06_meteo_atlantic.png" alt="NOAA Atlantic Analysis mit Bootsposition"></div>
+        <div class="shot"><img src="screenshots/quickstart/tools_07_meteo_southern.png" alt="Southern Hemisphere Analysis (NWS PYFE11) mit Bootsposition"></div>
+        <p data-i18n="s5_meteo_p2">Je nach Karte lässt sich zusätzlich die Windstärke durch Messung des Isobarenabstands abschätzen (nach Burch).</p>
+      </div></div>
+    </div>
+
+  </div>
+</section>
+
+<footer><div class="foot-copy">© 2026 SextantFix</div></footer>
+
+<script>
+function toggleAcc(id){
+  const item = document.getElementById(id);
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.acc-item.open').forEach(el=>el.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+// Direkt zu einem Punkt springen und aufklappen, z.B. quickstart.html#step2
+window.addEventListener('DOMContentLoaded', ()=>{
+  const id = location.hash.replace('#','');
+  if(id && document.getElementById(id)){
+    document.getElementById(id).classList.add('open');
+    setTimeout(()=>document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'}), 100);
+  }
+});
+
+const I18N = {
+  de:{
+    back:"Zurück zu Tutorials",
+    ph_eyebrow:"Kurzanleitung im Detail",ph_h1:"Jede Position, Schritt für Schritt.",
+    ph_p:"Auf einen Punkt klicken, um ihn aufzuklappen — mit Beispielbildern und Erklärungen.",
+    shot_placeholder:"[ Beispielbild folgt ]",note_label:"Hinweis:",
+    ov_title:"Die Programmoberfläche im Überblick",
+    ov_p:"Bevor es losgeht: ein kurzer Rundgang, was wo liegt.",
+    ov_z1_n:"Links (rot)",ov_z1_p:"Sextantenmessung eintragen, Sonnen-Setup (Hemisphäre), Standlinien-Legende, Koppelnavigation.",
+    ov_z2_n:"Oben (grün)",ov_z2_p:"Schnellzugriff-Knöpfe: Windy, Google Earth, Stellarium, Leuchtfeuer, SAS.Planet, Meteorologie — übergeben deine aktuelle Position direkt.",
+    ov_z3_n:"Oben rechts (pink)",ov_z3_p:"„Anzeige & Result\"-Panel — Ergebnisse und weitere Zusatzinformationen (Fehlerbereich, Details, Kalibrierung).",
+    ov_z4_n:"Mitte unten (gelb)",ov_z4_p:"Kartenstil wählen — Basiskarte und Overlays (Seezeichen, Route, Wassertiefen).",
+    ov_z5_n:"Unten links (gelb)",ov_z5_p:"Strömung (Richtung / Stärke), Koordinaten an Mausposition, Missweisung an Bootsposition.",
+    s1_title:"Installieren & starten",
+    s1_p0_strong:"Warum ein Windows-Warnfenster erscheinen kann:",
+    s1_p0:"SextantFix ist kostenlose Software eines einzelnen Entwicklers, nicht mit einem teuren, kommerziellen Zertifikat signiert. Windows kennt den Herausgeber deshalb nicht und zeigt sicherheitshalber eine Warnung — das bedeutet nicht, dass etwas mit dem Programm nicht stimmt, nur dass es (noch) nicht weit genug verbreitet ist, um Windows bekannt zu sein. Ob die Warnung überhaupt erscheint, hängt von den Smart-App-Control-Einstellungen deines Systems ab.",
+    s1_link1:"Weitere Informationen",
+    s1_p1:"Auf „Weitere Informationen\" klicken, um die Details und einen zweiten Button einzublenden.",
+    s1_link2:"Trotzdem ausführen",
+    s1_p2:"Jetzt „Trotzdem ausführen\" wählen, um mit der Installation fortzufahren.",
+    s1_p3:"Der Installationsassistent führt danach durch die eigentliche Installation.",
+    s1_link3:"Installieren",
+    s1_p4:"Das vorgeschlagene Zielverzeichnis passt für die meisten Nutzer — einfach auf „Installieren\" klicken.",
+    s1_p5:"Fertig — auf dem Desktop liegt jetzt eine Verknüpfung, die SextantFix startet.",
+    s1_p6_strong:"Kartendaten beim ersten Start:",
+    s1_p6:"SextantFix lädt beim allerersten Start einmalig Küstenlinien-Daten im Hintergrund herunter, damit die Karte auch offline etwas anzuzeigen hat — ganz ohne Dialog oder Rückfrage, das läuft automatisch mit.",
+    s1_note:"Kein Internet beim ersten Start? Kein Problem — SextantFix funktioniert trotzdem, die Küstenlinien-Karte wird automatisch nachgeladen, sobald wieder eine Verbindung besteht.",
+    s2_title:"Position mit der Sonne bestimmen",
+    s2_p0:"Beim ersten Programmstart und ausgeschaltetem GPS kann es sein, dass kein Boot auf der Karte erscheint.",
+    s2_p0b:"Um alle Funktionen des Programmes zu nutzen, sollte das Boot manuell über Rechtsklick auf die Karte in eine Schätzposition gebracht werden (\"Move boat here\").",
+    s2_link0:"Move boat here",
+    s2_note0:"Für die eigentliche Positionsbestimmung per Tagbogenverfahren oder St.-Hilaire-Methode braucht SextantFix keine Bootsposition — beide kommen ohne angenommene Position (AP) aus. Eine gesetzte Bootsposition sorgt aber dafür, dass andere Programmteile (z. B. Meteorologie, externe Werkzeuge) korrekt funktionieren.",
+    s2_p4_strong:"Ohne eigene Messungen anfangen:",
+    s2_p4:"Über das ☁️-Symbol eine der 20 Beispiel-Messreihen laden (verschiedene Weltregionen) — praktisch zum Ausprobieren, ohne selbst zu peilen. Jede Reihe enthält 10 simulierte Sonnenmessungen über eine Stunde, mit einem Zufallsablesefehler von bis zu 2 Bogenminuten.",
+    s2_p5:"Du musst dabei nicht alle 10 Messungen verwenden — einzelne Messungen lassen sich deaktivieren, um auszuprobieren, wie wenige tatsächlich für einen brauchbaren Fix reichen. Das folgende Beispiel nutzt nur 4 der 10 Messungen:",
+    s2_p6:"Standlinien und Tagbogenkurve erscheinen erst nach einem Klick auf „Berechnen\" — nicht automatisch. Berechnen lässt sich schon ab einer einzigen Messung: SextantFix zeigt dann einen vollständigen Höhenkreis (Circle of Position) statt einer Standlinie — sinnvoll etwa in Kombination mit anderen Standlinien-Arten (Tiefenlinie, Peilung auf ein Objekt oder auch eine ältere Kurslinie).",
+    s2_check_note:"Schneiden sich die Standlinien nicht überzeugend, prüfe die eingegebene Hemisphäre (N/S) und die Blickrichtung zur Sonne — der Sonnen-Bildpunkt auf dem Globus hilft bei der Orientierung.",
+    s2_p1:"Jetzt zur eigenen Messung: Beispielhaft wurden 3 Messungen mit einem Halbspiegelsextanten durchgeführt, der Unterrand der Sonne wurde auf den Horizont gesetzt. Die Bilder entstammen einem Simulationsprogramm (Sailaway III von Richard Knoll).",
+    s2_cap1:"25°24,4' · 18:33:37 UTC",
+    s2_cap2:"40°57,3' · 20:01:53 UTC",
+    s2_cap3:"51°26,6' · 22:03:20 UTC",
+    s2_fields_intro:"Jede Messung wird über das Panel „Sextant reading“ erfasst: Uhrzeit in UTC, der gemessene Himmelskörper (Sonne, Mond, Planeten oder Sterne), der Messrand (LL = Unterrand, UL = Oberrand, Zentrum), Grad/Bogenminuten der Höhe, Indexfehler (IE) und Augenhöhe. Ein Klick auf „Add measurement“ übernimmt die Werte in die Liste — hier bereits für alle 3 Messungen geschehen.",
+    s2_icons_intro:"Über die Symbolleiste unter der Messungsliste lassen sich einzelne Messungen bearbeiten (✏️) oder löschen (🗑️) — der grüne Kreis links neben jeder Messung schaltet sie einzeln ein oder aus. Ganze Messreihen lassen sich als Datensatz speichern (💾) und wieder laden (📁), zusätzlich zu den Beispiel-Messreihen aus der Cloud (☁️). Das Besen-Symbol (🧹) löscht dagegen alle Messungen auf einen Schlag — unwiderruflich, falls sie nicht vorher gespeichert wurden.",
+    s2_outlier_intro:"SextantFix erkennt auffällige Messungen automatisch und geht flexibel mit ihnen um:",
+    s2_outlier_red_strong:"Automatische Ausreißer-Erkennung:",
+    s2_outlier_red:"SextantFix markiert auffällige Messungen automatisch in zwei Stufen: „sus\" (verdächtig) ab einer Abweichung von 2,5σ vom Median, „out\" (deutlicher Ausreißer) ab 3,5σ — berechnet über eine robuste Streuung (mittlere Absolutabweichung vom Median), nicht über den RMS-Wert. Hier betrifft das Messung 2 (40°57,3'), markiert als „out\".",
+    s2_outlier_green_strong:"Umgang mit Ausreißern wählen:",
+    s2_outlier_green:"Unter „Calculation mode\" legst du fest, ob der Fix im Standardverfahren berechnet wird oder Ausreißer berücksichtigt werden — entweder ganz ausgeschlossen oder mit „Robust (Huber)\" nur schwächer gewichtet (Faktor k, hier 1,5).",
+    s2_outlier_yellow_strong:"Ergebnisvergleich:",
+    s2_outlier_yellow:"Das Panel zeigt den Fix nach Tagbogenverfahren (blauer Punkt) neben der klassischen St.-Hilaire-Lösung aus erster und letzter Messung (oranger Punkt) — optional mit einem einblendbaren Fehlerbereich um die Position.",
+    s2_outlier_blue_strong:"Huber-Auswertung im Detail:",
+    s2_outlier_blue:"Hier zeigt SextantFix die Auswirkung der Gewichtung — die Standardabweichung sinkt von 2,0' auf 1,3', Messung 2 wurde mit Faktor 0,28 heruntergewichtet statt verworfen.",
+    s2_diurnal_intro:"Das Verfahren nach Ralf Lampalzer berechnet den Fix nicht wie klassische Methoden als Schnittpunkt von Standlinien, sondern als beste Näherung der ortsspezifischen „Sonnenspur\" am Himmel — und umgeht damit das Problem schleifender Schnittwinkel. Dadurch ist eine zuverlässige Positionsbestimmung bereits innerhalb einer Stunde möglich, allerdings meist mit mehreren Messungen. Die Lage der Messpunkte zur Kurve macht grobe Ausreißer schon optisch erkennbar; eine genauere Qualitätsbeurteilung liefert der RMS-Wert.",
+    s2_diurnal_cap:"RMS: 1,3'",
+    s3_title:"Terrestrische Peilungen",
+    s3_p1:"Rechtsklick auf die Karte öffnet das Kontextmenü — darüber lassen sich Peilungen zu Landmarken oder Leuchttürmen setzen. SextantFix bietet zwei Verfahren zur Standortbestimmung über terrestrische Peilungen:",
+    s3_two_title:"Kreuzpeilung — Standort aus zwei Peillinien",
+    s3_two_p:"Peilobjekt anklicken, dann Richtung und Länge der Peillinie festlegen — beides wird interaktiv auf der Karte angezeigt. Für die zweite Peillinie wiederholen. Der Standort wird automatisch aus dem Schnittpunkt berechnet.",
+    s3_run_title:"Versegelung — Standort aus zeitversetzten Peilungen",
+    s3_run_p:"Zwei Peilungen auf dasselbe Objekt setzen, mit ausreichendem Winkel dazwischen. Anschließend Kartenkurs (rechtweisend oder Kompass) und die zurückgelegte Strecke eingeben — die erste Peillinie wird entsprechend verschoben, der Standort automatisch berechnet.",
+    s4_title:"qtVlm & SextantFix",
+    s4_intro:"qtVlm spielt für SextantFix eine zentrale Rolle: Die App verzichtet bewusst auf ein eigenes, sehr aufwändiges Routen- und Wetterprogramm und verlässt sich stattdessen auf qtVlm — SextantFix übergibt dafür immer nur die aktuelle Position, den Rest erledigt qtVlm wie gewohnt.",
+    s4_workflow_intro:"Vorgeschlagener Workflow in der Zusammenarbeit mit qtVlm:",
+    s4_step1:"1. Bestimmen Sie Ihre Position in SextantFix (siehe Punkt 2 und 3).",
+    s4_step2:"2. Rechtsklick auf das Boot → „Copy Position\".",
+    s4_step3:"3. Wechsel zu qtVlm → Rechtsklick → „Paste a mark\" (Marke einfügen).",
+    s4_step4:"4. Erledigen Sie alle üblichen Aufgaben in qtVlm — Wettergribs laden, Route planen, wie gewohnt.",
+    s4_step56:"5. Route in qtVlm kopieren (Rechtsklick-Menü). 6. Route in SextantFix einfügen — per „Strg+V\" oder über das Rechtsklick-Menü.",
+    s4_step7:"7. Optional: Über den Schalter „GRIB\" lassen sich Gribfiles direkt aus qtVlm importieren oder eigene NOAA-Daten laden. Die Zeitleistenfunktion zeigt dazu die errechnete Bootsposition entlang der Route.",
+    s5_title:"Andere Werkzeuge anbinden",
+    s5_intro:"Die Knöpfe oben links öffnen sechs externe Werkzeuge — jeweils mit der aktuellen Bootsposition, soweit möglich.",
+    s5_windy_title:"1. Windy",
+    s5_windy_p:"Überträgt automatisch die aktuelle Position. Eine aus qtVlm exportierte GPX-Route kann zusätzlich geladen werden.",
+    s5_ge_title:"2. Google Earth",
+    s5_ge_p:"Position wird automatisch übergeben, mit direktem Zoom auf die Position. Eine Route kann per Copy & Paste übergeben werden.",
+    s5_stel_title:"3. Stellarium",
+    s5_stel_p1:"Beim ersten Aufruf ist einmalig der Pfad zur stellarium.exe einzugeben. Bei Nachtmessungen erleichtert Stellarium die Auswahl der Navigationssterne — die aktuelle Bootsposition wird übergeben, sodass der Nachthimmel den passenden Ausschnitt zeigt.",
+    s5_stel_p2:"Dafür müssen in Stellarium einmalig zwei Erweiterungen aktiviert werden: Unter F2 (oder Seitenleiste) → Reiter „Erweiterungen\" die Erweiterung „Fernbedienung\" auswählen (nicht „Remote Sync\") und „Beim Start laden\" sowie den Server-Autostart aktivieren, danach Stellarium einmal neu starten. Für die Navigationssterne zusätzlich die Erweiterung „Navigationssterne\" auswählen und ebenfalls „Beim Start laden\" aktivieren.",
+    s5_lights_title:"4. Leuchtfeuer online",
+    s5_lights_p:"Ein wirklich nettes Gadget von Frank Schmirler: Ähnlich wie qtVlm zeigt es Blinkfrequenz, -dauer und -farbe der Leuchtfeuer — sehr hilfreich beim Einüben der Lichterdifferenzierung bei Nacht.",
+    s5_sas_title:"5. SAS.Planet",
+    s5_sas_p:"Pfadeingabe erforderlich, erlaubt diverse zusätzliche Karten und vieles mehr. Die Position wird in die Zwischenablage kopiert — in SAS.Planet über „Goto\" → „Paste from clipboard\" einfügen (ein einfaches Strg+V reicht in SAS.Planet nicht aus).",
+    s5_meteo_title:"6. Meteorologie",
+    s5_meteo_p1:"Mehrere ständig aktualisierte Wetterkarten zeigen Hoch-/Tiefdruckgebiete und Frontenverläufe. Je nach Position des Bootes wird automatisch die passende Quelle gewählt.",
+    s5_meteo_p2:"Je nach Karte lässt sich zusätzlich die Windstärke durch Messung des Isobarenabstands abschätzen (nach Burch).",
+  },
+  en:{
+    back:"Back to Tutorials",
+    ph_eyebrow:"Quick Start in Detail",ph_h1:"Every step, in depth.",
+    ph_p:"Click any item to expand it — with example screenshots and explanations.",
+    shot_placeholder:"[ Example image coming ]",note_label:"Note:",
+    ov_title:"The interface at a glance",
+    ov_p:"Before you start: a quick tour of what's where.",
+    ov_z1_n:"Left (red)",ov_z1_p:"Enter sextant sights, sun setup (hemisphere), lines-of-position legend, dead reckoning.",
+    ov_z2_n:"Top (green)",ov_z2_p:"Quick-access buttons: Windy, Google Earth, Stellarium, lighthouses, SAS.Planet, Meteorology — hand off your current position directly.",
+    ov_z3_n:"Top right (pink)",ov_z3_p:"\"Display & Result\" panel — results and further details (error area, breakdown, calibration).",
+    ov_z4_n:"Bottom center (yellow)",ov_z4_p:"Choose your map style — base map and overlays (sea marks, route, water depths).",
+    ov_z5_n:"Bottom left (yellow)",ov_z5_p:"Current (direction / speed), coordinates at the mouse position, magnetic variation at the boat position.",
+    s1_title:"Install & launch",
+    s1_p0_strong:"Why a Windows warning may appear:",
+    s1_p0:"SextantFix is free software from a single developer, not signed with an expensive commercial certificate. Windows doesn't recognise the publisher and shows a precautionary warning — this doesn't mean anything is wrong with the app, only that it isn't (yet) widespread enough for Windows to know it. Whether the warning appears at all depends on your system's Smart App Control settings.",
+    s1_link1:"More info",
+    s1_p1:"Click \"More info\" to reveal the details and a second button.",
+    s1_link2:"Run anyway",
+    s1_p2:"Now choose \"Run anyway\" to continue the installation.",
+    s1_p3:"The installer then walks you through the actual installation.",
+    s1_link3:"Install",
+    s1_p4:"The suggested destination folder works fine for most users — just click \"Install\".",
+    s1_p5:"Done — a shortcut to SextantFix is now on your desktop.",
+    s1_p6_strong:"Map data on first launch:",
+    s1_p6:"SextantFix downloads coastline data once, in the background, on first launch, so the chart has something to show even offline — no dialog, no prompt, it just happens automatically.",
+    s1_note:"No internet on first launch? No problem — SextantFix still works, the coastline data downloads automatically once a connection is available.",
+    s2_title:"Get a position from the sun",
+    s2_p0:"On first launch, with GPS switched off, no boat may appear on the chart yet.",
+    s2_p0b:"To use all of the program's features, the boat should be set manually to an estimated position via right-click on the chart (\"Move boat here\").",
+    s2_link0:"Move boat here",
+    s2_note0:"SextantFix doesn't need a boat position for the actual fix calculation via the diurnal-arc or St. Hilaire method — neither requires an assumed position (AP). A set boat position does, however, make sure other parts of the program (e.g. Meteorology, external tools) work correctly.",
+    s2_p4_strong:"Start without your own sights:",
+    s2_p4:"Use the ☁️ icon to load one of 20 sample sight series (different regions of the world) — handy for trying things out without taking your own sights. Each series contains 10 simulated sun sights over one hour, with a random reading error of up to 2 arcminutes.",
+    s2_p5:"You don't have to use all 10 sights — individual sights can be deactivated, to try how few actually give a usable fix. The following example uses only 4 of the 10 sights:",
+    s2_p6:"Lines of position and the diurnal-arc curve only appear after clicking \"Compute\" — not automatically. Compute already works with a single sight: SextantFix then shows a full circle of position instead of a line — useful, for example, combined with other kinds of position lines (a depth contour, a bearing to an object, or even an older course line).",
+    s2_check_note:"If the lines of position don't intersect convincingly, check the hemisphere (N/S) you entered and the direction you're looking toward the sun — the sun's ground point on the globe helps with orientation.",
+    s2_p1:"Now for your own sights: as an example, 3 sights were taken with a half-mirror sextant, bringing the sun's lower limb down to the horizon. The images are from a sailing simulator (Sailaway III by Richard Knoll).",
+    s2_cap1:"25°24.4' · 18:33:37 UTC",
+    s2_cap2:"40°57.3' · 20:01:53 UTC",
+    s2_cap3:"51°26.6' · 22:03:20 UTC",
+    s2_fields_intro:"Each sight is entered via the \"Sextant reading\" panel: time in UTC, the observed body (sun, moon, planets, or stars), the limb measured (LL = lower limb, UL = upper limb, center), degrees/minutes of altitude, index error (IE), and eye height. Clicking \"Add measurement\" saves the values to the list — already done here for all 3 sights.",
+    s2_icons_intro:"The icon row below the sight list lets you edit (✏️) or delete (🗑️) individual sights — the green circle to the left of each sight switches it on or off. Whole sight series can be saved as a file (💾) and loaded again (📁), in addition to the sample sight series from the cloud (☁️). The broom icon (🧹), by contrast, clears all sights at once — irreversibly, unless they were saved beforehand.",
+    s2_outlier_intro:"SextantFix detects unusual sights automatically and handles them flexibly:",
+    s2_outlier_red_strong:"Automatic outlier detection:",
+    s2_outlier_red:"SextantFix flags unusual sights automatically in two stages: \"sus\" (suspicious) from a deviation of 2.5σ from the median, \"out\" (clear outlier) from 3.5σ — based on a robust spread measure (median absolute deviation), not the RMS value. Here that's sight 2 (40°57.3'), flagged as \"out\".",
+    s2_outlier_green_strong:"Choosing how outliers are handled:",
+    s2_outlier_green:"Under \"Calculation mode\" you choose whether the fix is computed in standard mode or takes outliers into account — either excluding them entirely, or, with \"Robust (Huber)\", only downweighting them (factor k, here 1.5).",
+    s2_outlier_yellow_strong:"Result comparison:",
+    s2_outlier_yellow:"The panel shows the diurnal-arc fix (blue dot) alongside the classic St. Hilaire solution from the first and last sight (orange dot) — optionally with a toggleable error area around the position.",
+    s2_outlier_blue_strong:"Huber evaluation in detail:",
+    s2_outlier_blue:"Here SextantFix shows the effect of the weighting — the RMS drops from 2.0' to 1.3', and sight 2 was downweighted by a factor of 0.28 instead of being discarded.",
+    s2_diurnal_intro:"The method by Ralf Lampalzer doesn't compute the fix as an intersection of lines of position like classic methods — instead it finds the best match to the location-specific \"sun track\" across the sky, sidestepping the problem of shallow crossing angles. That makes a reliable position possible within a single hour, typically at the cost of needing several sights. How closely the sight points sit to the curve already shows gross outliers visually; the RMS value gives a more precise quality measure.",
+    s2_diurnal_cap:"RMS: 1.3'",
+    s3_title:"Terrestrial bearings",
+    s3_p1:"Right-click the chart to open the context menu — set bearings to landmarks or lighthouses from there. SextantFix offers two methods for a position fix from terrestrial bearings:",
+    s3_two_title:"Cross bearing — fix from two bearing lines",
+    s3_two_p:"Click the landmark, then set the direction and length of the bearing line — both shown interactively on the chart. Repeat for the second bearing line. The fix is calculated automatically from the intersection.",
+    s3_run_title:"Running fix — position from bearings taken at different times",
+    s3_run_p:"Take two bearings on the same object, with a sufficient angle between them. Then enter the course made good (true or compass) and the distance run — the first bearing line is shifted accordingly, and the fix is calculated automatically.",
+    s4_title:"qtVlm & SextantFix",
+    s4_intro:"qtVlm plays a central role for SextantFix: the app deliberately does without its own, very elaborate routing and weather program and relies on qtVlm instead — SextantFix only ever hands over the current position, qtVlm handles the rest as usual.",
+    s4_workflow_intro:"Suggested workflow when working with qtVlm:",
+    s4_step1:"1. Determine your position in SextantFix (see points 2 and 3).",
+    s4_step2:"2. Right-click the boat → \"Copy Position\".",
+    s4_step3:"3. Switch to qtVlm → right-click → \"Paste a mark\".",
+    s4_step4:"4. Do all your usual tasks in qtVlm — load weather gribs, plan a route, as normal.",
+    s4_step56:"5. Copy the route in qtVlm (right-click menu). 6. Paste the route into SextantFix — via \"Ctrl+V\" or the right-click menu.",
+    s4_step7:"7. Optional: the \"GRIB\" button lets you import grib files directly from qtVlm, or load your own NOAA data. The timeline shows the calculated boat position along the route.",
+    s5_title:"Connect your other tools",
+    s5_intro:"The buttons at top left open six external tools — each using the current boat position, where possible.",
+    s5_windy_title:"1. Windy",
+    s5_windy_p:"Automatically transfers the current position. A GPX route exported from qtVlm can be loaded as well.",
+    s5_ge_title:"2. Google Earth",
+    s5_ge_p:"Position is transferred automatically, with a direct zoom to the position. A route can be transferred via copy & paste.",
+    s5_stel_title:"3. Stellarium",
+    s5_stel_p1:"The first time you open it, you need to enter the path to stellarium.exe once. For night sights, Stellarium makes it easier to pick out navigational stars — the current boat position is passed along, so the night sky shows the correct view.",
+    s5_stel_p2:"For this, two plugins need to be enabled once in Stellarium: under F2 (or the side bar) → the \"Plugins\" tab, select \"Remote Control\" (not \"Remote Sync\") and enable \"Load at startup\" as well as the server auto-start, then restart Stellarium once. For the navigational stars, also select the \"Navigational Stars\" plugin and likewise enable \"Load at startup\".",
+    s5_lights_title:"4. Lights online",
+    s5_lights_p:"A genuinely nice gadget by Frank Schmirler: similar to qtVlm, it shows the flash frequency, duration, and colour of lighthouses — very helpful for practising light identification at night.",
+    s5_sas_title:"5. SAS.Planet",
+    s5_sas_p:"Requires entering a path once, gives access to various additional charts and more. The position is copied to the clipboard — in SAS.Planet, insert it via \"Goto\" → \"Paste from clipboard\" (a plain Ctrl+V does not work in SAS.Planet).",
+    s5_meteo_title:"6. Meteorology",
+    s5_meteo_p1:"Several continuously updated weather charts show highs/lows and frontal systems. Depending on the boat's position, the matching source is chosen automatically.",
+    s5_meteo_p2:"Depending on the chart, wind strength can additionally be estimated by measuring the distance between isobars (per Burch).",
+  },
+  fr:{
+    back:"Retour aux tutoriels",
+    ph_eyebrow:"Démarrage rapide en détail",ph_h1:"Chaque étape, en détail.",
+    ph_p:"Cliquez sur un point pour le déplier — avec captures d'écran et explications.",
+    shot_placeholder:"[ Image d'exemple à venir ]",note_label:"Remarque :",
+    ov_title:"L'interface en un coup d'œil",
+    ov_p:"Avant de commencer : un petit tour de ce qui se trouve où.",
+    ov_z1_n:"À gauche (rouge)",ov_z1_p:"Saisir les mesures au sextant, configuration solaire (hémisphère), légende des droites de hauteur, estime.",
+    ov_z2_n:"En haut (vert)",ov_z2_p:"Boutons d'accès rapide : Windy, Google Earth, Stellarium, phares, SAS.Planet, Météorologie — transmettent directement votre position actuelle.",
+    ov_z3_n:"En haut à droite (rose)",ov_z3_p:"Panneau « Affichage & Résultat » — résultats et informations complémentaires (zone d'erreur, détails, calibration).",
+    ov_z4_n:"En bas au centre (jaune)",ov_z4_p:"Choisir le style de carte — fond de carte et superpositions (amers, route, profondeurs).",
+    ov_z5_n:"En bas à gauche (jaune)",ov_z5_p:"Courant (direction / force), coordonnées à la position de la souris, déclinaison magnétique à la position du bateau.",
+    s1_title:"Installer et démarrer",
+    s1_p0_strong:"Pourquoi un avertissement Windows peut apparaître :",
+    s1_p0:"SextantFix est un logiciel gratuit développé par une seule personne, non signé avec un certificat commercial coûteux. Windows ne reconnaît donc pas l'éditeur et affiche un avertissement par précaution — cela ne signifie pas qu'il y a un problème avec le programme, seulement qu'il n'est pas (encore) assez répandu pour être connu de Windows. L'apparition de l'avertissement dépend des paramètres Smart App Control de votre système.",
+    s1_link1:"Plus d'infos",
+    s1_p1:"Cliquez sur « Plus d'infos » pour afficher les détails et un second bouton.",
+    s1_link2:"Exécuter quand même",
+    s1_p2:"Choisissez maintenant « Exécuter quand même » pour poursuivre l'installation.",
+    s1_p3:"L'assistant d'installation vous guide ensuite à travers l'installation proprement dite.",
+    s1_link3:"Installer",
+    s1_p4:"Le dossier de destination proposé convient à la plupart des utilisateurs — cliquez simplement sur « Installer ».",
+    s1_p5:"Terminé — un raccourci vers SextantFix se trouve maintenant sur votre bureau.",
+    s1_p6_strong:"Données cartographiques au premier lancement :",
+    s1_p6:"SextantFix télécharge une fois, en arrière-plan, au tout premier lancement, les données de trait de côte, afin que la carte affiche quelque chose même hors ligne — sans dialogue ni question, cela se fait automatiquement.",
+    s1_note:"Pas d'internet au premier lancement ? Aucun problème — SextantFix fonctionne quand même, les données de trait de côte se téléchargeront automatiquement dès qu'une connexion sera disponible.",
+    s2_title:"Obtenir une position grâce au soleil",
+    s2_p0:"Au premier lancement, avec le GPS désactivé, aucun bateau n'apparaît peut-être encore sur la carte.",
+    s2_p0b:"Pour utiliser toutes les fonctions du programme, le bateau doit être placé manuellement à une position estimée par clic droit sur la carte (« Move boat here »).",
+    s2_link0:"Move boat here",
+    s2_note0:"Pour le calcul du point lui-même, par la méthode de l'arc diurne ou de St-Hilaire, SextantFix n'a pas besoin de position du bateau — aucune des deux méthodes ne nécessite de position estimée (AP). Une position du bateau définie garantit toutefois le bon fonctionnement d'autres parties du programme (par ex. Météorologie, outils externes).",
+    s2_p4_strong:"Commencer sans vos propres mesures :",
+    s2_p4:"Utilisez l'icône ☁️ pour charger l'une des 20 séries de mesures d'exemple (différentes régions du monde) — pratique pour essayer sans faire ses propres relevés. Chaque série contient 10 mesures solaires simulées sur une heure, avec une erreur de lecture aléatoire allant jusqu'à 2 minutes d'arc.",
+    s2_p5:"Il n'est pas nécessaire d'utiliser les 10 mesures — certaines peuvent être désactivées, pour essayer combien suffisent réellement à obtenir un point exploitable. L'exemple suivant n'utilise que 4 des 10 mesures :",
+    s2_p6:"Les droites de hauteur et la courbe de l'arc diurne n'apparaissent qu'après un clic sur « Compute » — pas automatiquement. Le calcul fonctionne déjà avec une seule mesure : SextantFix affiche alors un cercle de hauteur complet au lieu d'une droite — utile par exemple combiné à d'autres types de lignes de position (une ligne de sonde, un relèvement sur un objet, ou même une ancienne route).",
+    s2_check_note:"Si les droites de hauteur ne se coupent pas de façon convaincante, vérifiez l'hémisphère saisi (N/S) et la direction dans laquelle le soleil est observé — le point subsolaire sur le globe aide à s'orienter.",
+    s2_p1:"Passons maintenant à vos propres mesures : à titre d'exemple, 3 mesures ont été prises avec un sextant à demi-miroir, en amenant le bord inférieur du soleil sur l'horizon. Les images proviennent d'un simulateur de voile (Sailaway III de Richard Knoll).",
+    s2_cap1:"25°24,4' · 18:33:37 UTC",
+    s2_cap2:"40°57,3' · 20:01:53 UTC",
+    s2_cap3:"51°26,6' · 22:03:20 UTC",
+    s2_fields_intro:"Chaque mesure est saisie via le panneau « Sextant reading » : heure en UTC, l'astre observé (soleil, lune, planètes ou étoiles), le bord mesuré (LL = bord inférieur, UL = bord supérieur, centre), degrés/minutes de hauteur, erreur d'index (IE) et hauteur de l'œil. Un clic sur « Add measurement » enregistre les valeurs dans la liste — déjà fait ici pour les 3 mesures.",
+    s2_icons_intro:"La rangée d'icônes sous la liste des mesures permet de modifier (✏️) ou supprimer (🗑️) une mesure individuelle — le cercle vert à gauche de chaque mesure l'active ou la désactive. Des séries de mesures complètes peuvent être enregistrées (💾) et rechargées (📁), en plus des séries d'exemple issues du cloud (☁️). L'icône de balai (🧹), elle, efface toutes les mesures d'un coup — de façon irréversible, sauf si elles ont été enregistrées au préalable.",
+    s2_outlier_intro:"SextantFix détecte automatiquement les mesures suspectes et les traite avec souplesse :",
+    s2_outlier_red_strong:"Détection automatique des valeurs aberrantes :",
+    s2_outlier_red:"SextantFix repère automatiquement les mesures suspectes en deux niveaux : « sus » (suspecte) à partir d'un écart de 2,5σ par rapport à la médiane, « out » (valeur aberrante nette) à partir de 3,5σ — calculé à partir d'une dispersion robuste (écart absolu médian), pas du RMS. Ici, il s'agit de la mesure 2 (40°57,3'), marquée « out ».",
+    s2_outlier_green_strong:"Choisir le traitement des valeurs aberrantes :",
+    s2_outlier_green:"Sous « Calculation mode », vous choisissez si le point est calculé en mode standard ou en tenant compte des valeurs aberrantes — soit en les excluant complètement, soit, avec « Robust (Huber) », en les pondérant simplement plus faiblement (facteur k, ici 1,5).",
+    s2_outlier_yellow_strong:"Comparaison des résultats :",
+    s2_outlier_yellow:"Le panneau affiche le point selon la méthode de l'arc diurne (point bleu) à côté de la solution classique de St-Hilaire à partir de la première et de la dernière mesure (point orange) — avec en option une zone d'erreur affichable autour de la position.",
+    s2_outlier_blue_strong:"Analyse Huber en détail :",
+    s2_outlier_blue:"SextantFix montre ici l'effet de la pondération — le RMS passe de 2,0' à 1,3', et la mesure 2 a été pondérée à la baisse par un facteur de 0,28 plutôt que d'être écartée.",
+    s2_diurnal_intro:"La méthode de Ralf Lampalzer ne calcule pas le point comme l'intersection de droites de hauteur, comme les méthodes classiques, mais comme la meilleure approximation de la « trace solaire » propre au lieu dans le ciel — évitant ainsi le problème des angles d'intersection trop fermés. Une position fiable devient ainsi possible en moins d'une heure, au prix, en général, de plusieurs mesures. La position des points de mesure par rapport à la courbe rend déjà visibles d'éventuelles valeurs aberrantes grossières ; le RMS permet une évaluation plus précise de la qualité.",
+    s2_diurnal_cap:"RMS : 1,3'",
+    s3_title:"Relèvements terrestres",
+    s3_p1:"Un clic droit sur la carte ouvre le menu contextuel — vous pouvez y définir des relèvements vers des amers ou des phares. SextantFix propose deux méthodes pour déterminer un point à partir de relèvements terrestres :",
+    s3_two_title:"Point par recoupement — position à partir de deux droites de relèvement",
+    s3_two_p:"Cliquez sur l'amer, puis définissez la direction et la longueur de la droite de relèvement — les deux sont affichées de façon interactive sur la carte. Répétez pour la deuxième droite de relèvement. Le point est calculé automatiquement à partir de l'intersection.",
+    s3_run_title:"Point courant — position à partir de relèvements décalés dans le temps",
+    s3_run_p:"Prenez deux relèvements sur le même objet, avec un angle suffisant entre eux. Saisissez ensuite le cap suivi (vrai ou compas) et la distance parcourue — la première droite de relèvement est déplacée en conséquence, et le point est calculé automatiquement.",
+    s4_title:"qtVlm & SextantFix",
+    s4_intro:"qtVlm joue un rôle central pour SextantFix : l'application renonce délibérément à son propre programme de routage et météo, très coûteux à développer, et s'appuie à la place sur qtVlm — SextantFix ne transmet toujours que la position actuelle, qtVlm s'occupe du reste comme d'habitude.",
+    s4_workflow_intro:"Workflow proposé pour travailler avec qtVlm :",
+    s4_step1:"1. Déterminez votre position dans SextantFix (voir points 2 et 3).",
+    s4_step2:"2. Clic droit sur le bateau → « Copy Position ».",
+    s4_step3:"3. Basculez vers qtVlm → clic droit → « Paste a mark » (coller une marque).",
+    s4_step4:"4. Effectuez toutes vos tâches habituelles dans qtVlm — charger les gribs météo, planifier une route, comme d'habitude.",
+    s4_step56:"5. Copiez la route dans qtVlm (menu clic droit). 6. Collez la route dans SextantFix — via « Ctrl+V » ou le menu clic droit.",
+    s4_step7:"7. Optionnel : le bouton « GRIB » permet d'importer des fichiers grib directement depuis qtVlm, ou de charger vos propres données NOAA. La ligne de temps affiche la position calculée du bateau le long de la route.",
+    s5_title:"Connecter vos autres outils",
+    s5_intro:"Les boutons en haut à gauche ouvrent six outils externes — chacun avec la position actuelle du bateau, dans la mesure du possible.",
+    s5_windy_title:"1. Windy",
+    s5_windy_p:"Transmet automatiquement la position actuelle. Une route GPX exportée depuis qtVlm peut également être chargée.",
+    s5_ge_title:"2. Google Earth",
+    s5_ge_p:"La position est transmise automatiquement, avec un zoom direct sur la position. Une route peut être transmise par copier-coller.",
+    s5_stel_title:"3. Stellarium",
+    s5_stel_p1:"Lors du premier lancement, il faut indiquer une fois le chemin vers stellarium.exe. Pour les mesures nocturnes, Stellarium facilite le choix des étoiles de navigation — la position actuelle du bateau est transmise, afin que le ciel nocturne affiche la bonne vue.",
+    s5_stel_p2:"Pour cela, deux extensions doivent être activées une fois dans Stellarium : sous F2 (ou le panneau latéral) → l'onglet « Extensions », sélectionnez « Contrôle à distance » (pas « Remote Sync ») et activez « Charger au démarrage » ainsi que le démarrage automatique du serveur, puis redémarrez Stellarium une fois. Pour les étoiles de navigation, sélectionnez en plus l'extension « Étoiles de navigation » et activez également « Charger au démarrage ».",
+    s5_lights_title:"4. Leuchtfeuer online",
+    s5_lights_p:"Un gadget vraiment sympathique de Frank Schmirler : comme dans qtVlm, il affiche la fréquence, la durée et la couleur des éclats des phares — très utile pour s'entraîner à différencier les feux de nuit.",
+    s5_sas_title:"5. SAS.Planet",
+    s5_sas_p:"Nécessite d'indiquer un chemin une fois, donne accès à diverses cartes supplémentaires et bien plus encore. La position est copiée dans le presse-papiers — dans SAS.Planet, insérez-la via « Goto » → « Paste from clipboard » (un simple Ctrl+V ne fonctionne pas dans SAS.Planet).",
+    s5_meteo_title:"6. Météorologie",
+    s5_meteo_p1:"Plusieurs cartes météo actualisées en continu affichent les zones de haute/basse pression et le tracé des fronts. Selon la position du bateau, la source correspondante est choisie automatiquement.",
+    s5_meteo_p2:"Selon la carte, la force du vent peut en plus être estimée en mesurant l'écart entre les isobares (méthode Burch).",
+  }
+};
+function setLang(lang){
+  const d=I18N[lang]||I18N.de;
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(d[k]!==undefined) el.textContent=d[k];
+  });
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-lang')===lang));
+  try{ localStorage.setItem('sextantfix_lang', lang); }catch(e){}
+}
+document.querySelectorAll('.lang button').forEach(btn=>btn.addEventListener('click',()=>setLang(btn.getAttribute('data-lang'))));
+let storedLang=null;
+try{ storedLang=localStorage.getItem('sextantfix_lang'); }catch(e){}
+const nl=storedLang||(navigator.language||'de').slice(0,2);
+setLang(['de','en','fr'].includes(nl)?nl:'de');
+</script>
+</body>
+</html>

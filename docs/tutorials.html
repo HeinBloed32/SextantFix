@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SextantFix — Tutorials</title>
+<style>
+  :root{
+    --bg:        #0a1420;
+    --bg-soft:   #0f1c2b;
+    --panel:     #13263a;
+    --ink:       #e6eef5;
+    --ink-dim:   #8ba3ba;
+    --cyan:      #38d5e0;
+    --cyan-deep: #1b9aa8;
+    --brass:     #c9a86a;
+    --line:      #22394f;
+    --maxw:      1180px;
+    --mono: "SF Mono","JetBrains Mono","Fira Code",ui-monospace,"Cascadia Code",Consolas,monospace;
+    --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+
+  /* ---------- Header ---------- */
+  header{ position:sticky; top:0; z-index:50; background:rgba(10,20,32,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .brand{ display:flex; align-items:center; gap:11px; font-family:var(--mono); font-weight:600; letter-spacing:.5px; }
+  .brand .logo{ width:30px; height:30px; flex:none; }
+  .brand b{ color:var(--ink); font-size:1.05rem; }
+  .brand b span{ color:var(--cyan); }
+  .nav-links{ display:flex; align-items:center; gap:28px; }
+  .nav-links a{ font-family:var(--mono); font-size:.82rem; letter-spacing:.6px; color:var(--ink-dim); text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover{ color:var(--cyan); }
+  .nav-links a.on{ color:var(--cyan); }
+  .lang{ display:flex; gap:2px; font-family:var(--mono); font-size:.78rem; }
+  .lang button{ background:none; border:1px solid var(--line); color:var(--ink-dim); padding:5px 9px; cursor:pointer; letter-spacing:.5px; transition:all .2s; }
+  .lang button:first-child{ border-radius:5px 0 0 5px; }
+  .lang button:last-child{ border-radius:0 5px 5px 0; }
+  .lang button:not(:first-child){ border-left:none; }
+  .lang button.on{ background:var(--cyan); color:var(--bg); border-color:var(--cyan); font-weight:600; }
+
+  /* ---------- Kleiner Seiten-Kopf ---------- */
+  .pagehead{ padding:64px 0 48px; border-bottom:1px solid var(--line); }
+  .eyebrow{ font-family:var(--mono); font-size:.78rem; letter-spacing:2px; color:var(--cyan); text-transform:uppercase; margin-bottom:16px; }
+  .pagehead h1{ font-size:clamp(2rem,4.5vw,3rem); letter-spacing:-.8px; font-weight:800; margin-bottom:16px; }
+  .pagehead p{ color:var(--ink-dim); max-width:38em; font-size:1.05rem; }
+
+  /* ---------- Section-Grundlagen (aus index.html übernommen) ---------- */
+  section.block{ padding:70px 0; }
+  .sec-head{ margin-bottom:40px; max-width:42em; }
+  .sec-eyebrow{ font-family:var(--mono); font-size:.76rem; letter-spacing:2px; color:var(--brass); text-transform:uppercase; margin-bottom:14px; }
+  .sec-head h2{ font-size:clamp(1.6rem,3.2vw,2.2rem); letter-spacing:-.5px; line-height:1.15; }
+  .sec-head p{ color:var(--ink-dim); margin-top:14px; font-size:1.02rem; }
+
+  /* ---------- Kurzanleitung ---------- */
+  .quickstart{ background:var(--bg-soft); border-bottom:1px solid var(--line); }
+  .qs-list{ display:flex; flex-direction:column; gap:0; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--panel); }
+  .qs-item{ display:flex; gap:20px; padding:22px 26px; border-bottom:1px solid var(--line); }
+  .qs-item:last-child{ border-bottom:none; }
+  .qs-n{ font-family:var(--mono); color:var(--brass); font-size:1.1rem; font-weight:700; flex:none; width:28px; }
+  .qs-body h3{ font-size:1.02rem; margin-bottom:6px; letter-spacing:-.1px; }
+  .qs-body p{ color:var(--ink-dim); font-size:.92rem; }
+  .qs-body code{ font-family:var(--mono); background:rgba(56,213,224,.1); color:var(--cyan); padding:1px 6px; border-radius:4px; font-size:.85em; }
+
+  /* ---------- Video-Kacheln ---------- */
+  .vgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .vcard{ background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; transition:all .25s; position:relative; }
+  .vcard:hover{ border-color:var(--cyan-deep); transform:translateY(-3px); }
+  .vcard .thumb{
+    aspect-ratio:16/9; background:linear-gradient(135deg,var(--bg-soft),var(--bg));
+    display:flex; align-items:center; justify-content:center; position:relative;
+  }
+  .vcard .thumb .play{ width:52px; height:52px; border-radius:50%; background:rgba(56,213,224,.14); border:1.5px solid var(--cyan-deep); display:flex; align-items:center; justify-content:center; }
+  .vcard .thumb .play svg{ width:20px; height:20px; fill:var(--cyan); margin-left:3px; }
+  .vcard .thumb iframe{ position:absolute; inset:0; width:100%; height:100%; border:none; }
+  .vcard .badge{ position:absolute; top:10px; right:10px; font-family:var(--mono); font-size:.66rem; letter-spacing:.6px; text-transform:uppercase; background:rgba(201,168,106,.16); border:1px solid rgba(201,168,106,.4); color:var(--brass); padding:3px 8px; border-radius:20px; }
+  .vcard .cap{ padding:16px 18px; }
+  .vcard .cap .vn{ font-family:var(--mono); font-size:.72rem; color:var(--ink-dim); letter-spacing:.5px; margin-bottom:4px; }
+  .vcard .cap h4{ font-size:.98rem; margin-bottom:6px; letter-spacing:-.1px; }
+  .vcard .cap p{ color:var(--ink-dim); font-size:.86rem; }
+
+  /* ---------- Footer ---------- */
+  footer{ padding:40px 0; }
+  .foot{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+  .foot-links{ display:flex; gap:24px; font-family:var(--mono); font-size:.8rem; }
+  .foot-links a{ color:var(--ink-dim); transition:color .2s; }
+  .foot-links a:hover{ color:var(--cyan); }
+  .foot-copy{ font-family:var(--mono); font-size:.74rem; color:var(--ink-dim); letter-spacing:.5px; }
+
+  @media(max-width:880px){
+    .nav-links{ display:none; }
+    .vgrid{ grid-template-columns:1fr; }
+    .qs-item{ flex-direction:column; gap:8px; }
+  }
+  [hidden]{ display:none !important; }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">
+      <svg class="logo" viewBox="0 0 40 40" fill="none">
+        <path d="M6 32 A26 26 0 0 1 32 6" stroke="var(--brass)" stroke-width="2.5" fill="none"/>
+        <path d="M6 32 L20 12 L32 32 Z" stroke="var(--cyan)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <circle cx="20" cy="12" r="2.2" fill="var(--cyan)"/>
+        <circle cx="27" cy="9" r="1.4" fill="var(--brass)"/>
+      </svg>
+      <b>Sextant<span>Fix</span></b>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html#how" data-i18n="nav_how">Verfahren</a>
+      <a href="index.html#features" data-i18n="nav_features">Funktionen</a>
+      <a href="index.html#gallery" data-i18n="nav_gallery">Ansichten</a>
+      <a href="tutorials.html" class="on" data-i18n="nav_tutorials">Tutorials</a>
+      <a href="index.html#download" data-i18n="nav_download">Download</a>
+    </nav>
+    <div class="lang">
+      <button data-lang="de" class="on">DE</button>
+      <button data-lang="en">EN</button>
+      <button data-lang="fr">FR</button>
+    </div>
+  </div>
+</header>
+
+<!-- SEITEN-KOPF -->
+<section class="pagehead">
+  <div class="wrap">
+    <div class="eyebrow" data-i18n="ph_eyebrow">Lernen &amp; Nachschlagen</div>
+    <h1 data-i18n="ph_h1">Tutorials.</h1>
+    <p data-i18n="ph_p">Kurz erklärt: Wer keine Videos schauen möchte, findet unten eine schriftliche Kurzanleitung. Wer's lieber sieht, findet darunter die Video-Übersicht.</p>
+  </div>
+</section>
+
+<!-- KURZANLEITUNG -->
+<section class="block quickstart" id="quickstart">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow" data-i18n="qs_eyebrow">Keine Zeit für Videos?</div>
+      <h2 data-i18n="qs_h2">Kurzanleitung in fünf Schritten.</h2>
+      <p data-i18n="qs_p">Das Wichtigste auf einen Blick — ausführlicher geht's in den Videos weiter unten.</p>
+    </div>
+    <div class="qs-list">
+      <div class="qs-item">
+        <div class="qs-n">01</div>
+        <div class="qs-body">
+          <h3 data-i18n="qs1_h">Installieren &amp; starten</h3>
+          <p data-i18n="qs1_p">Installer herunterladen, ausführen — fertig. Auf dem Desktop liegt danach eine Verknüpfung, die SextantFix startet.</p>
+          <a href="quickstart.html#step1" style="display:inline-block;margin-top:8px;font-family:var(--mono);font-size:.8rem;color:var(--cyan);" data-i18n="qs1_more">Details ansehen →</a>
+        </div>
+      </div>
+      <div class="qs-item">
+        <div class="qs-n">—</div>
+        <div class="qs-body">
+          <h3 data-i18n="qsov_h">Die Programmoberfläche im Überblick</h3>
+          <p data-i18n="qsov_p">Ein kurzer Rundgang, was wo liegt, bevor's mit den Messungen losgeht.</p>
+          <a href="quickstart.html#overview" style="display:inline-block;margin-top:8px;font-family:var(--mono);font-size:.8rem;color:var(--cyan);" data-i18n="qsov_more">Details ansehen →</a>
+        </div>
+      </div>
+      <div class="qs-item">
+        <div class="qs-n">02</div>
+        <div class="qs-body">
+          <h3 data-i18n="qs2_h">Position mit der Sonne bestimmen</h3>
+          <p data-i18n="qs2_p">Sextanten-Messungen eintragen (oder erstmal mit fertigen Beispieldaten über das ☁️-Symbol ausprobieren) — SextantFix berechnet automatisch Standlinien und Fix per Tagbogenverfahren oder St.-Hilaire-Methode.</p>
+          <a href="quickstart.html#step2" style="display:inline-block;margin-top:8px;font-family:var(--mono);font-size:.8rem;color:var(--cyan);" data-i18n="qs2_more">Details ansehen →</a>
+        </div>
+      </div>
+      <div class="qs-item">
+        <div class="qs-n">03</div>
+        <div class="qs-body">
+          <h3 data-i18n="qs3_h">Terrestrische Peilungen</h3>
+          <p data-i18n="qs3_p">Rechtsklick auf die Karte für Peilungen zu Landmarken und Leuchttürmen, inklusive Versegelungspeilung für unterwegs.</p>
+          <a href="quickstart.html#step3" style="display:inline-block;margin-top:8px;font-family:var(--mono);font-size:.8rem;color:var(--cyan);" data-i18n="qs3_more">Details ansehen →</a>
+        </div>
+      </div>
+      <div class="qs-item">
+        <div class="qs-n">04</div>
+        <div class="qs-body">
+          <h3 data-i18n="qs4_h">Wetter auf der Karte</h3>
+          <p data-i18n="qs4_p">Über den <code>Meteorologie</code>-Knopf analysierte Bodenwetterkarten öffnen — mit Bootsposition und Windmessung aus dem Isobaren-Abstand.</p>
+          <a href="quickstart.html#step4" style="display:inline-block;margin-top:8px;font-family:var(--mono);font-size:.8rem;color:var(--cyan);" data-i18n="qs4_more">Details ansehen →</a>
+        </div>
+      </div>
+      <div class="qs-item">
+        <div class="qs-n">05</div>
+        <div class="qs-body">
+          <h3 data-i18n="qs5_h">Andere Werkzeuge anbinden</h3>
+          <p data-i18n="qs5_p">Die Knöpfe oben verbinden dich direkt mit Windy, Google Earth, Stellarium, SAS.Planet und der Leuchtfeuer-Datenbank — mit deiner aktuellen Position.</p>
+          <a href="quickstart.html#step5" style="display:inline-block;margin-top:8px;font-family:var(--mono);font-size:.8rem;color:var(--cyan);" data-i18n="qs5_more">Details ansehen →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO-ÜBERSICHT -->
+<section class="block" id="videos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow" data-i18n="v_eyebrow">Zum Zusehen</div>
+      <h2 data-i18n="v_h2">Video-Tutorials.</h2>
+      <p data-i18n="v_p">Kurze, fokussierte Videos zu den wichtigsten Abläufen. Untertitel auf Deutsch, Englisch und Französisch.</p>
+    </div>
+    <div class="vgrid">
+
+      <div class="vcard">
+        <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z"/></svg></div><span class="badge" data-i18n="v_soon">Bald verfügbar</span></div>
+        <div class="cap">
+          <div class="vn">01</div>
+          <h4 data-i18n="v1_h">Getting Started</h4>
+          <p data-i18n="v1_p">Installation, erster Start, ein Rundgang durch die Oberfläche.</p>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z"/></svg></div><span class="badge" data-i18n="v_soon">Bald verfügbar</span></div>
+        <div class="cap">
+          <div class="vn">02</div>
+          <h4 data-i18n="v2_h">Your First Sextant Fix</h4>
+          <p data-i18n="v2_p">Tagbogenverfahren und St.-Hilaire-Methode — von der Messung zum Fix.</p>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z"/></svg></div><span class="badge" data-i18n="v_soon">Bald verfügbar</span></div>
+        <div class="cap">
+          <div class="vn">03</div>
+          <h4 data-i18n="v3_h">Terrestrial Navigation</h4>
+          <p data-i18n="v3_p">Peilungen zu Landmarken und Leuchttürmen, inklusive Versegelungspeilung.</p>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z"/></svg></div><span class="badge" data-i18n="v_soon">Bald verfügbar</span></div>
+        <div class="cap">
+          <div class="vn">04</div>
+          <h4 data-i18n="v4_h">Weather on the Chart</h4>
+          <p data-i18n="v4_p">Bodenwetterkarten, Bootsposition, Windmessung aus dem Isobaren-Abstand.</p>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z"/></svg></div><span class="badge" data-i18n="v_soon">Bald verfügbar</span></div>
+        <div class="cap">
+          <div class="vn">05</div>
+          <h4 data-i18n="v5_h">Connecting Your Fleet</h4>
+          <p data-i18n="v5_p">qtVlm, Windy, Stellarium, SAS.Planet und die Leuchtfeuer-Datenbank im Zusammenspiel.</p>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="thumb"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z"/></svg></div><span class="badge" data-i18n="v_soon">Bald verfügbar</span></div>
+        <div class="cap">
+          <div class="vn">06</div>
+          <h4 data-i18n="v6_h">Offline at Sea</h4>
+          <p data-i18n="v6_p">Karten ohne Internetverbindung nutzen.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="index.html" class="brand">
+      <svg class="logo" viewBox="0 0 40 40" fill="none" style="width:26px;height:26px;">
+        <path d="M6 32 A26 26 0 0 1 32 6" stroke="var(--brass)" stroke-width="2.5" fill="none"/>
+        <path d="M6 32 L20 12 L32 32 Z" stroke="var(--cyan)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      </svg>
+      <b>Sextant<span style="color:var(--cyan)">Fix</span></b>
+    </a>
+    <div class="foot-links">
+      <a href="https://github.com/HeinBloed32/SextantFix" data-i18n="foot_gh">GitHub</a>
+      <a href="index.html#how" data-i18n="foot_how">Verfahren</a>
+      <a href="index.html#download" data-i18n="foot_dl">Download</a>
+    </div>
+    <div class="foot-copy">© 2026 SextantFix</div>
+  </div>
+</footer>
+
+<script>
+const I18N = {
+  de:{
+    nav_how:"Verfahren",nav_features:"Funktionen",nav_gallery:"Ansichten",nav_tutorials:"Tutorials",nav_download:"Download",
+    ph_eyebrow:"Lernen & Nachschlagen",ph_h1:"Tutorials.",
+    ph_p:"Kurz erklärt: Wer keine Videos schauen möchte, findet unten eine schriftliche Kurzanleitung. Wer's lieber sieht, findet darunter die Video-Übersicht.",
+    qs_eyebrow:"Keine Zeit für Videos?",qs_h2:"Kurzanleitung in fünf Schritten.",
+    qs_p:"Das Wichtigste auf einen Blick — ausführlicher geht's in den Videos weiter unten.",
+    qs1_h:"Installieren & starten",qs1_p:"Installer herunterladen, ausführen — fertig. Auf dem Desktop liegt danach eine Verknüpfung, die SextantFix startet.", qs1_more:"Details ansehen →",
+    qsov_h:"Die Programmoberfläche im Überblick",qsov_p:"Ein kurzer Rundgang, was wo liegt, bevor's mit den Messungen losgeht.",qsov_more:"Details ansehen →",
+    qs2_h:"Position mit der Sonne bestimmen",qs2_p:"Sextanten-Messungen eintragen (oder erstmal mit fertigen Beispieldaten über das ☁️-Symbol ausprobieren) — SextantFix berechnet automatisch Standlinien und Fix per Tagbogenverfahren oder St.-Hilaire-Methode.", qs2_more:"Details ansehen →",
+    qs3_h:"Terrestrische Peilungen",qs3_p:"Rechtsklick auf die Karte für Peilungen zu Landmarken und Leuchttürmen, inklusive Versegelungspeilung für unterwegs.", qs3_more:"Details ansehen →",
+    qs4_h:"Wetter auf der Karte",qs4_p:"Über den Meteorologie-Knopf analysierte Bodenwetterkarten öffnen — mit Bootsposition und Windmessung aus dem Isobaren-Abstand.", qs4_more:"Details ansehen →",
+    qs5_h:"Andere Werkzeuge anbinden",qs5_p:"Die Knöpfe oben verbinden dich direkt mit Windy, Google Earth, Stellarium, SAS.Planet und der Leuchtfeuer-Datenbank — mit deiner aktuellen Position.", qs5_more:"Details ansehen →",
+    v_eyebrow:"Zum Zusehen",v_h2:"Video-Tutorials.",v_p:"Kurze, fokussierte Videos zu den wichtigsten Abläufen. Untertitel auf Deutsch, Englisch und Französisch.",
+    v_soon:"Bald verfügbar",
+    v1_h:"Getting Started",v1_p:"Installation, erster Start, ein Rundgang durch die Oberfläche.",
+    v2_h:"Your First Sextant Fix",v2_p:"Tagbogenverfahren und St.-Hilaire-Methode — von der Messung zum Fix.",
+    v3_h:"Terrestrial Navigation",v3_p:"Peilungen zu Landmarken und Leuchttürmen, inklusive Versegelungspeilung.",
+    v4_h:"Weather on the Chart",v4_p:"Bodenwetterkarten, Bootsposition, Windmessung aus dem Isobaren-Abstand.",
+    v5_h:"Connecting Your Fleet",v5_p:"qtVlm, Windy, Stellarium, SAS.Planet und die Leuchtfeuer-Datenbank im Zusammenspiel.",
+    v6_h:"Offline at Sea",v6_p:"Karten ohne Internetverbindung nutzen.",
+    foot_gh:"GitHub",foot_how:"Verfahren",foot_dl:"Download",
+  },
+  en:{
+    nav_how:"Method",nav_features:"Features",nav_gallery:"Views",nav_tutorials:"Tutorials",nav_download:"Download",
+    ph_eyebrow:"Learn & Reference",ph_h1:"Tutorials.",
+    ph_p:"No time for videos? A written quick-start guide is right below. Prefer to watch? The video overview follows underneath.",
+    qs_eyebrow:"No time for videos?",qs_h2:"Quick start in five steps.",
+    qs_p:"The essentials at a glance — the videos below go into more detail.",
+    qs1_h:"Install & launch",qs1_p:"Download the installer, run it — done. A desktop shortcut to SextantFix is created automatically.", qs1_more:"View details →",
+    qsov_h:"The interface at a glance",qsov_p:"A quick tour of what's where, before you start entering sights.",qsov_more:"View details →",
+    qs2_h:"Get a position from the sun",qs2_p:"Enter your sextant sights (or try the ready-made sample data via the ☁️ icon first) — SextantFix automatically computes lines of position and a fix, using the diurnal-arc or St. Hilaire method.", qs2_more:"View details →",
+    qs3_h:"Terrestrial bearings",qs3_p:"Right-click the chart for bearings to landmarks and lighthouses, including running fix for underway positioning.", qs3_more:"View details →",
+    qs4_h:"Weather on the chart",qs4_p:"Open analysed surface weather charts via the Meteorology button — with boat position and wind speed from isobar spacing.", qs4_more:"View details →",
+    qs5_h:"Connect your other tools",qs5_p:"The buttons up top link you straight to Windy, Google Earth, Stellarium, SAS.Planet and the lighthouse database — using your current position.", qs5_more:"View details →",
+    v_eyebrow:"To Watch",v_h2:"Video tutorials.",v_p:"Short, focused videos covering the key workflows. Subtitles in German, English and French.",
+    v_soon:"Coming soon",
+    v1_h:"Getting Started",v1_p:"Installation, first launch, a tour of the interface.",
+    v2_h:"Your First Sextant Fix",v2_p:"The diurnal-arc and St. Hilaire methods — from sight to fix.",
+    v3_h:"Terrestrial Navigation",v3_p:"Bearings to landmarks and lighthouses, including running fix.",
+    v4_h:"Weather on the Chart",v4_p:"Surface weather charts, boat position, wind speed from isobar spacing.",
+    v5_h:"Connecting Your Fleet",v5_p:"qtVlm, Windy, Stellarium, SAS.Planet and the lighthouse database working together.",
+    v6_h:"Offline at Sea",v6_p:"Using charts without an internet connection.",
+    foot_gh:"GitHub",foot_how:"Method",foot_dl:"Download",
+  },
+  fr:{
+    nav_how:"Méthode",nav_features:"Fonctions",nav_gallery:"Vues",nav_tutorials:"Tutoriels",nav_download:"Télécharger",
+    ph_eyebrow:"Apprendre & consulter",ph_h1:"Tutoriels.",
+    ph_p:"Pas le temps pour des vidéos ? Un guide de démarrage rapide écrit se trouve juste en dessous. Vous préférez regarder ? L'aperçu vidéo suit plus bas.",
+    qs_eyebrow:"Pas le temps pour des vidéos ?",qs_h2:"Démarrage rapide en cinq étapes.",
+    qs_p:"L'essentiel en un coup d'œil — les vidéos ci-dessous entrent davantage dans le détail.",
+    qs1_h:"Installer et démarrer",qs1_p:"Téléchargez l'installateur, exécutez-le — terminé. Un raccourci vers SextantFix est créé automatiquement sur le bureau.", qs1_more:"Voir les détails →",
+    qsov_h:"L'interface en un coup d'œil",qsov_p:"Un petit tour de ce qui se trouve où, avant de commencer les mesures.",qsov_more:"Voir les détails →",
+    qs2_h:"Obtenir une position grâce au soleil",qs2_p:"Saisissez vos mesures au sextant (ou essayez d'abord les données d'exemple via l'icône ☁️) — SextantFix calcule automatiquement les droites de hauteur et le point, selon la méthode de l'arc diurne ou de St-Hilaire.", qs2_more:"Voir les détails →",
+    qs3_h:"Relèvements terrestres",qs3_p:"Clic droit sur la carte pour des relèvements vers des amers et des phares, y compris le point courant pour la navigation en cours de route.", qs3_more:"Voir les détails →",
+    qs4_h:"La météo sur la carte",qs4_p:"Ouvrez des cartes météo analysées via le bouton Météorologie — avec la position du bateau et la force du vent calculée à partir de l'écart isobare.", qs4_more:"Voir les détails →",
+    qs5_h:"Connecter vos autres outils",qs5_p:"Les boutons en haut vous relient directement à Windy, Google Earth, Stellarium, SAS.Planet et la base de données des phares — avec votre position actuelle.", qs5_more:"Voir les détails →",
+    v_eyebrow:"À regarder",v_h2:"Tutoriels vidéo.",v_p:"Des vidéos courtes et ciblées sur les principales étapes. Sous-titres en allemand, anglais et français.",
+    v_soon:"Bientôt disponible",
+    v1_h:"Getting Started",v1_p:"Installation, premier démarrage, tour de l'interface.",
+    v2_h:"Your First Sextant Fix",v2_p:"Méthodes de l'arc diurne et de St-Hilaire — de la mesure au point.",
+    v3_h:"Terrestrial Navigation",v3_p:"Relèvements vers des amers et phares, y compris le point courant.",
+    v4_h:"Weather on the Chart",v4_p:"Cartes météo au sol, position du bateau, vitesse du vent selon l'écart isobare.",
+    v5_h:"Connecting Your Fleet",v5_p:"qtVlm, Windy, Stellarium, SAS.Planet et la base des phares, ensemble.",
+    v6_h:"Offline at Sea",v6_p:"Utiliser les cartes sans connexion internet.",
+    foot_gh:"GitHub",foot_how:"Méthode",foot_dl:"Télécharger",
+  }
+};
+function setLang(lang){
+  const d=I18N[lang]||I18N.de;
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(d[k]!==undefined) el.textContent=d[k];
+  });
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-lang')===lang));
+  try{ localStorage.setItem('sextantfix_lang', lang); }catch(e){}
+}
+document.querySelectorAll('.lang button').forEach(btn=>btn.addEventListener('click',()=>setLang(btn.getAttribute('data-lang'))));
+let storedLang=null;
+try{ storedLang=localStorage.getItem('sextantfix_lang'); }catch(e){}
+const nl=storedLang||(navigator.language||'de').slice(0,2);
+setLang(['de','en','fr'].includes(nl)?nl:'de');
+</script>
+</body>
+</html>
