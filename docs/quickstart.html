@@ -306,8 +306,8 @@
         <p data-i18n="s5_meteo_p1">Mehrere ständig aktualisierte Wetterkarten zeigen Hoch-/Tiefdruckgebiete und Frontenverläufe. Je nach Position des Bootes wird automatisch die passende Quelle gewählt.</p>
         <div class="shot"><img src="screenshots/quickstart/tools_06_meteo_atlantic.png" alt="NOAA Atlantic Analysis mit Bootsposition"></div>
         <div class="shot"><img src="screenshots/quickstart/tools_07_meteo_southern.png" alt="Southern Hemisphere Analysis (NWS PYFE11) mit Bootsposition"></div>
-        <p data-i18n="s5_meteo_p3">Eine Ausnahme ist die Südatlantik-Karte (Quelle: Brasilien): Sie liegt nur als KML-Datei vor, die SextantFix nicht selbst darstellen kann, und der automatische Download per Programm gelingt hier bislang nicht. Stattdessen öffnet sich die Karte in Google Earth Pro — ohne automatische Positionsübergabe.</p>
-        <div class="shot"><img src="screenshots/quickstart/tools_05_meteo_googleearthpro.png" alt="Südatlantik-Wetterkarte als KML in Google Earth Pro"></div>
+        <p data-i18n="s5_meteo_p3">Eine Ausnahme ist die Südatlantik-Karte (Quelle: Marinha do Brasil): Der automatische Download per Programm gelingt hier bislang nicht — stattdessen öffnet sich die Karte als einzelnes Bild direkt im Browser, ohne automatische Positionsübergabe.</p>
+        <div class="shot"><img src="screenshots/quickstart/tools_08_meteo_south_atlantic_brazil.png" alt="Südatlantik-Bodendruckkarte der Marinha do Brasil"></div>
         <p data-i18n="s5_meteo_p2">Je nach Karte lässt sich zusätzlich die Windstärke durch Messung des Isobarenabstands abschätzen (nach Burch).</p>
       </div></div>
     </div>
@@ -434,7 +434,7 @@ const I18N = {
     s5_sas_p:"Pfadeingabe erforderlich, erlaubt diverse zusätzliche Karten und vieles mehr. Die Position wird in die Zwischenablage kopiert — in SAS.Planet über „Goto\" → „Paste from clipboard\" einfügen (ein einfaches Strg+V reicht in SAS.Planet nicht aus).",
     s5_meteo_title:"6. Meteorologie",
     s5_meteo_p1:"Mehrere ständig aktualisierte Wetterkarten zeigen Hoch-/Tiefdruckgebiete und Frontenverläufe. Je nach Position des Bootes wird automatisch die passende Quelle gewählt.",
-    s5_meteo_p3:"Eine Ausnahme ist die Südatlantik-Karte (Quelle: Brasilien): Sie liegt nur als KML-Datei vor, die SextantFix nicht selbst darstellen kann, und der automatische Download per Programm gelingt hier bislang nicht. Stattdessen öffnet sich die Karte in Google Earth Pro — ohne automatische Positionsübergabe.",
+    s5_meteo_p3:"Eine Ausnahme ist die Südatlantik-Karte (Quelle: Marinha do Brasil): Der automatische Download per Programm gelingt hier bislang nicht — stattdessen öffnet sich die Karte als einzelnes Bild direkt im Browser, ohne automatische Positionsübergabe.",
     s5_meteo_p2:"Je nach Karte lässt sich zusätzlich die Windstärke durch Messung des Isobarenabstands abschätzen (nach Burch).",
   },
   en:{
@@ -520,7 +520,7 @@ const I18N = {
     s5_sas_p:"Requires entering a path once, gives access to various additional charts and more. The position is copied to the clipboard — in SAS.Planet, insert it via \"Goto\" → \"Paste from clipboard\" (a plain Ctrl+V does not work in SAS.Planet).",
     s5_meteo_title:"6. Meteorology",
     s5_meteo_p1:"Several continuously updated weather charts show highs/lows and frontal systems. Depending on the boat's position, the matching source is chosen automatically.",
-    s5_meteo_p3:"One exception is the South Atlantic chart (source: Brazil): it's only available as a KML file, which SextantFix can't render itself, and automated download via script hasn't worked so far for this source. Instead, the chart opens in Google Earth Pro — without automatic position handoff.",
+    s5_meteo_p3:"One exception is the South Atlantic chart (source: Marinha do Brasil): automated download via script hasn't worked so far for this source — instead, the chart opens as a single image directly in the browser, without automatic position handoff.",
     s5_meteo_p2:"Depending on the chart, wind strength can additionally be estimated by measuring the distance between isobars (per Burch).",
   },
   fr:{
@@ -606,7 +606,7 @@ const I18N = {
     s5_sas_p:"Nécessite d'indiquer un chemin une fois, donne accès à diverses cartes supplémentaires et bien plus encore. La position est copiée dans le presse-papiers — dans SAS.Planet, insérez-la via « Goto » → « Paste from clipboard » (un simple Ctrl+V ne fonctionne pas dans SAS.Planet).",
     s5_meteo_title:"6. Météorologie",
     s5_meteo_p1:"Plusieurs cartes météo actualisées en continu affichent les zones de haute/basse pression et le tracé des fronts. Selon la position du bateau, la source correspondante est choisie automatiquement.",
-    s5_meteo_p3:"Une exception : la carte de l'Atlantique Sud (source : Brésil). Elle n'est disponible qu'en fichier KML, que SextantFix ne peut pas afficher lui-même, et le téléchargement automatique par script ne fonctionne pas encore pour cette source. La carte s'ouvre à la place dans Google Earth Pro — sans transmission automatique de la position.",
+    s5_meteo_p3:"Une exception : la carte de l'Atlantique Sud (source : Marinha do Brasil). Le téléchargement automatique par script ne fonctionne pas encore pour cette source — la carte s'ouvre à la place sous forme d'image unique directement dans le navigateur, sans transmission automatique de la position.",
     s5_meteo_p2:"Selon la carte, la force du vent peut en plus être estimée en mesurant l'écart entre les isobares (méthode Burch).",
   }
 };
