@@ -342,6 +342,18 @@
   </div>
 </section>
 
+<!-- WARUM SEXTANTFIX -->
+<section class="block" id="why" style="background:var(--bg-soft); border-top:1px solid var(--line);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow" data-i18n="why_eyebrow">Bevor du herunterlädst</div>
+      <h2 data-i18n="why_h2">Lohnt sich das für dich?</h2>
+    </div>
+    <p class="lead" style="max-width:52em;" data-i18n="why_p1">Position aus Sextantenmessungen zu bestimmen, ist keine neue Idee — das können andere Programme längst auch, manche schlanker, manche direkt in volle Navigationssuiten wie OpenCPN eingebaut. Der Unterschied bei SextantFix liegt in der Methode: Statt Standlinien zu schneiden, was bei zu geringem Sonnenlauf unzuverlässig wird, passt SextantFix die Messungen direkt an die tatsächliche Sonnenbahn an — den Tagbogen. Das liefert oft schon innerhalb einer Stunde einen brauchbaren Fix, häufig mit weniger Messungen als die klassische Methode braucht. Ausreißer werden dabei automatisch erkannt und schwächer gewichtet, statt pauschal übernommen oder von Hand verworfen zu werden. Terrestrische Peilungen und Versegelung laufen nach demselben Prinzip, auf derselben Karte.</p>
+    <p class="lead" style="max-width:52em; margin-top:6px;" data-i18n="why_p2">qtVlm plant Routen und Wetter hervorragend — hat aber keine Astronavigation an Bord. Genau diese Lücke füllt SextantFix und gibt die Position direkt an qtVlm zurück, dazu Shortcuts zu Windy, Google Earth, Stellarium, Leuchtfeuer online und aktuellen Wetterkarten. Was SextantFix bewusst nicht macht: eigene Routenplanung — dafür ist qtVlm da.</p>
+  </div>
+</section>
+
 <!-- DOWNLOAD -->
 <section class="download" id="download">
   <div class="wrap">
@@ -410,6 +422,9 @@ const I18N={
     g6_h:"Nahtlose Zusammenarbeit mit qtVlm, Windy, Wetterkarten, Stellarium, Google Earth und Leuchtfeuer-Datenbank",
     g7_h:"Meteorologische Karten",g7_p:"Analysierte Bodenwetterkarten (DWD, NOAA) mit Bootsposition — inklusive Windmessung aus Isobaren-Abstand nach David Burch.",
     g8_h:"Leuchtfeuer weltweit",g8_p:"Direkter Sprung zur Leuchtfeuer-Datenbank von Frank Schmirler, mit aktueller Position und Zoomstufe.",
+    why_eyebrow:"Bevor du herunterlädst",why_h2:"Lohnt sich das für dich?",
+    why_p1:"Position aus Sextantenmessungen zu bestimmen, ist keine neue Idee — das können andere Programme längst auch, manche schlanker, manche direkt in volle Navigationssuiten wie OpenCPN eingebaut. Der Unterschied bei SextantFix liegt in der Methode: Statt Standlinien zu schneiden, was bei zu geringem Sonnenlauf unzuverlässig wird, passt SextantFix die Messungen direkt an die tatsächliche Sonnenbahn an — den Tagbogen. Das liefert oft schon innerhalb einer Stunde einen brauchbaren Fix, häufig mit weniger Messungen als die klassische Methode braucht. Ausreißer werden dabei automatisch erkannt und schwächer gewichtet, statt pauschal übernommen oder von Hand verworfen zu werden. Terrestrische Peilungen und Versegelung laufen nach demselben Prinzip, auf derselben Karte.",
+    why_p2:"qtVlm plant Routen und Wetter hervorragend — hat aber keine Astronavigation an Bord. Genau diese Lücke füllt SextantFix und gibt die Position direkt an qtVlm zurück, dazu Shortcuts zu Windy, Google Earth, Stellarium, Leuchtfeuer online und aktuellen Wetterkarten. Was SextantFix bewusst nicht macht: eigene Routenplanung — dafür ist qtVlm da.",
     dl_h:"Jetzt ausprobieren.",dl_p:"SextantFix ist kostenlos. Lade den Installer für Windows — die Installation erledigt den Rest.",
     dl_btn:"Für Windows herunterladen",dl_tutorials:"Tutorials ansehen",dl_note:"Windows 10 / 11",
     dl_disc_label:"Hinweis:",
@@ -445,6 +460,9 @@ const I18N={
     g6_h:"Seamless collaboration with qtVlm, Windy, weather charts, Stellarium, Google Earth and lighthouse database",
     g7_h:"Weather Charts",g7_p:"Analysed surface weather charts (DWD, NOAA) with boat position — including wind speed from isobar spacing per David Burch.",
     g8_h:"Lighthouses Worldwide",g8_p:"Direct link to Frank Schmirler's lighthouse database, with current position and zoom level.",
+    why_eyebrow:"Before you download",why_h2:"Is this for you?",
+    why_p1:"Getting a position from sextant sights isn't a new idea — other programs already do it, some leaner, some built right into full navigation suites like OpenCPN. What's different about SextantFix is the method: instead of crossing lines of position, which gets unreliable when the sun hasn't moved far enough across the sky, SextantFix fits your sights directly to the sun's actual track — the Tagbogen. That gives a usable fix within about an hour, often from fewer sights than the classic method needs. Sights that don't fit are flagged and downweighted automatically, not just accepted outright or discarded by hand. Terrestrial bearings and running fixes work the same way, on the same chart.",
+    why_p2:"qtVlm plans routes and weather brilliantly — but has no celestial navigation on board. That's exactly the gap SextantFix fills, handing the position straight back to qtVlm, plus shortcuts to Windy, Google Earth, Stellarium, lights online and live weather charts. What SextantFix deliberately doesn't do: plan routes of its own — that's what qtVlm is for.",
     dl_h:"Try it now.",dl_p:"SextantFix is free. Download the Windows installer — the setup does the rest.",
     dl_btn:"Download for Windows",dl_tutorials:"Watch tutorials",dl_note:"Windows 10 / 11",
     dl_disc_label:"Note:",
@@ -480,6 +498,9 @@ const I18N={
     g6_h:"Collaboration transparente avec qtVlm, Windy, cartes météo, Stellarium, Google Earth et base de données des phares",
     g7_h:"Cartes météorologiques",g7_p:"Cartes d'analyse au sol (DWD, NOAA) avec la position du bateau — avec mesure du vent selon l'écart isobare (méthode David Burch).",
     g8_h:"Phares du monde entier",g8_p:"Lien direct vers la base de données des phares de Frank Schmirler, avec la position et le niveau de zoom actuels.",
+    why_eyebrow:"Avant de télécharger",why_h2:"Est-ce fait pour vous ?",
+    why_p1:"Déterminer sa position à partir de mesures au sextant n'est pas une idée nouvelle — d'autres programmes le font déjà, certains plus légers, d'autres intégrés directement dans des suites de navigation complètes comme OpenCPN. Ce qui distingue SextantFix, c'est la méthode : au lieu de croiser des droites de hauteur, ce qui devient peu fiable quand le soleil n'a pas assez tourné dans le ciel, SextantFix ajuste directement les mesures à la trajectoire réelle du soleil — le Tagbogen. Cela donne souvent un point exploitable en moins d'une heure, avec souvent moins de mesures que la méthode classique n'en exige. Les mesures qui ne correspondent pas sont détectées et pondérées automatiquement à la baisse, plutôt que simplement acceptées ou écartées à la main. Les relèvements terrestres et le point courant fonctionnent selon le même principe, sur la même carte.",
+    why_p2:"qtVlm planifie remarquablement bien les routes et la météo — mais ne dispose d'aucune navigation astronomique. C'est exactement cette lacune que comble SextantFix, qui renvoie directement la position à qtVlm, avec en plus des raccourcis vers Windy, Google Earth, Stellarium, Leuchtfeuer online et des cartes météo en direct. Ce que SextantFix ne fait délibérément pas : sa propre planification de route — c'est le rôle de qtVlm.",
     dl_h:"Essayez maintenant.",dl_p:"SextantFix est gratuit. Téléchargez l'installateur Windows — l'installation fait le reste.",
     dl_btn:"Télécharger pour Windows",dl_tutorials:"Voir les tutoriels",dl_note:"Windows 10 / 11",
     dl_disc_label:"Remarque :",
